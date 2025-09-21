@@ -23,3 +23,21 @@ func dynamic_stats():
         "remaining_equipment_power": equipment_power,
         "auras": auras,
     }
+
+
+# Override because we need to talk to our children
+func respond(event: String, args: Dictionary, current: StateDiffAggregate):
+    var responses = StateDiffAggregate.new()
+
+    responses.append_array(leader.respond(event, args, current))
+
+    for person in personnel:
+        responses.append_array(person.respond(event, args, current))
+
+    for device in equipment:
+        responses.append_array(device.respond(event, args, current))
+
+    # Do self last
+    responses.append(super.respond(event, args, current))
+
+    return responses
