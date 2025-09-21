@@ -14,6 +14,12 @@ func append(s: StateChangeDiff):
     originators[s.originator] = originators.get(s.originator, 0) + 1
 
 
+func append_array(ss: Array[StateChangeDiff]):
+    seq.append_array(ss)
+    for s in ss:
+        originators[s.originator] = originators.get(s.originator, 0) + 1
+
+
 func remove(s: StateChangeDiff):
     if seq.has(s):
         seq.erase(s)
