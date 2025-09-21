@@ -28,3 +28,13 @@ func dynamic_stats():
         "integrity": integrity,
         "auras": auras,
     }
+
+
+func respond(event: String, args: Dictionary, current: StateDiffAggregate):
+    var responses = StateDiffAggregate.new()
+    for aura in auras:
+        if current.active(aura):
+            continue
+        var response = aura.respond(event, args, current)
+        responses.append(response)
+    return responses
