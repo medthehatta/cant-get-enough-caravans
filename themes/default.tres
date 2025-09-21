@@ -1,0 +1,19 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://crojpfpmf2ecx"]
+
+[ext_resource type="FontFile" uid="uid://38nnq7um4y5u" path="res://fonts/VincendoItalic-3le7p.ttf" id="1_gnsgt"]
+[ext_resource type="FontFile" uid="uid://slokckhdrdrx" path="res://fonts/Vincendo-xRO0m.ttf" id="2_1fv3y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gnsgt"]
+bg_color = Color(0.137255, 0.137255, 0.137255, 0.756863)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_gnsgt"]
+vertical = true
+
+[resource]
+default_font = ExtResource("2_1fv3y")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_gnsgt")
+RichTextLabel/font_sizes/bold_font_size = 24
+RichTextLabel/font_sizes/bold_italics_font_size = 24
+RichTextLabel/fonts/italics_font = ExtResource("1_gnsgt")
+RichTextLabel/fonts/normal_font = ExtResource("2_1fv3y")
+VSeparator/styles/separator = SubResource("StyleBoxLine_gnsgt")

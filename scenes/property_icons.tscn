@@ -1,0 +1,84 @@
+[gd_scene load_steps=8 format=3 uid="uid://bqqxm8lqy7c7k"]
+
+[ext_resource type="Script" uid="uid://bfpts7x35xshc" path="res://scenes/property_icons.gd" id="1_ne0r0"]
+[ext_resource type="Texture2D" uid="uid://c5f2j77j31ojw" path="res://assets/icons/weight.svg" id="2_n3uda"]
+[ext_resource type="Texture2D" uid="uid://rvh1lgakomaw" path="res://assets/icons/open-chest.svg" id="3_63gdo"]
+[ext_resource type="Theme" uid="uid://crojpfpmf2ecx" path="res://themes/default.tres" id="3_n3uda"]
+[ext_resource type="Texture2D" uid="uid://c5netklmmh3jl" path="res://assets/icons/person.svg" id="4_q4tln"]
+[ext_resource type="Texture2D" uid="uid://dp5vnrlx2vugi" path="res://assets/icons/gears.svg" id="5_sk46j"]
+[ext_resource type="Texture2D" uid="uid://8wemlkmn74bb" path="res://assets/icons/opened-food-can.svg" id="6_sk46j"]
+
+[node name="PropertyIcons" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ne0r0")
+
+[node name="ChildContainer" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 0
+
+[node name="weight" type="TextureRect" parent="ChildContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_n3uda")
+
+[node name="cargo_capacity" type="TextureRect" parent="ChildContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("3_63gdo")
+
+[node name="max_personnel_as_leader" type="TextureRect" parent="ChildContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("4_q4tln")
+
+[node name="personnel_slots" type="TextureRect" parent="ChildContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("4_q4tln")
+
+[node name="max_equipment_slots" type="TextureRect" parent="ChildContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("5_sk46j")
+
+[node name="equipment_slots" type="TextureRect" parent="ChildContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("5_sk46j")
+
+[node name="daily_calories" type="TextureRect" parent="ChildContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("6_sk46j")
+
+[node name="Preview" type="RichTextLabel" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 54.0
+offset_top = 39.0
+offset_right = 876.0
+offset_bottom = 623.0
+theme = ExtResource("3_n3uda")
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "[img=48,center,center]res://assets/icons/weight.svg[/img] weight
+[img=48,center,center]res://assets/icons/open-chest.svg[/img] cargo_capacity
+[img=48,center,center]res://assets/icons/person.svg[/img] max_personnel_as_leader
+[img=48,center,center]res://assets/icons/person.svg[/img] personnel_slots
+[img=48,center,center]res://assets/icons/gears.svg[/img] max_equipment_slots
+[img=48,center,center]res://assets/icons/gears.svg[/img] equipment_slots
+[img=48,center,center]res://assets/icons/opened-food-can.svg[/img] daily_calories
+"
+fit_content = true
+autowrap_mode = 0
+
+[connection signal="child_exiting_tree" from="ChildContainer" to="." method="_on_child_container_child_exiting_tree"]

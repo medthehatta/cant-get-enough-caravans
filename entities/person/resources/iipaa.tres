@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Person" load_steps=3 format=3 uid="uid://bm87wrx675o1n"]
+
+[ext_resource type="Texture2D" uid="uid://c0wxuht68sbgu" path="res://assets/person/iipaa.png" id="1_4gn14"]
+[ext_resource type="Script" uid="uid://c8dj2kaew8s1y" path="res://entities/person/Person.gd" id="2_ohg3r"]
+
+[resource]
+script = ExtResource("2_ohg3r")
+name = "Iipaa"
+icon = ExtResource("1_4gn14")
+max_personnel_as_leader = 1
+max_equipment_slots = 0
+daily_calories = 50
+flavor = ""

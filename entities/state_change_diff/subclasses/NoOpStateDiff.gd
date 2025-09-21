@@ -1,0 +1,2 @@
+extends StateChangeDiff
+class_name NoOpStateDiff

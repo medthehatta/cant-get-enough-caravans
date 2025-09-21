@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://ebeqkgor3adm"]
+
+[ext_resource type="Script" uid="uid://b5n1k62g3pc7g" path="res://scenes/entity_tooltip.gd" id="1_vy6iq"]
+[ext_resource type="StyleBox" uid="uid://svf43y4mp4vv" path="res://themes/translucent_dark_bg.tres" id="3_uvqlf"]
+
+[node name="EntityTooltip" type="RichTextLabel"]
+z_index = 1
+offset_right = 226.0
+offset_bottom = 217.0
+theme_override_styles/normal = ExtResource("3_uvqlf")
+bbcode_enabled = true
+text = "[b]Lorem ipsum[/b]
+
+Dolor sit amet"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+script = ExtResource("1_vy6iq")

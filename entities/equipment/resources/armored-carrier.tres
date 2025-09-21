@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TransportEquipment" load_steps=3 format=3 uid="uid://bd16diywec47b"]
+
+[ext_resource type="Texture2D" uid="uid://gqwdh15c1ce6" path="res://assets/equipment/armored-carrier.png" id="1_7tg6u"]
+[ext_resource type="Script" uid="uid://c2wla63u37i1u" path="res://entities/equipment/subclasses/TransportEquipment.gd" id="2_vjn28"]
+
+[resource]
+script = ExtResource("2_vjn28")
+name = "armored-carrier"
+weight = 50
+cargo_capacity = 50
+icon = ExtResource("1_7tg6u")
+flavor = ""
+metadata/_custom_type_script = "uid://6w7egcwp0lpn"

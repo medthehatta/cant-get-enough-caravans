@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dmlu0ct0qitvw"]
+
+[ext_resource type="Script" uid="uid://c37mei62rtxmp" path="res://scenes/caravan_evaluator.gd" id="1_is7wl"]
+
+[node name="CaravanEvaluator" type="Node"]
+script = ExtResource("1_is7wl")

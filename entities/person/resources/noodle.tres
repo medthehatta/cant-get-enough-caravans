@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Person" load_steps=3 format=3 uid="uid://ba63f4vc64ly0"]
+
+[ext_resource type="Texture2D" uid="uid://s2qyid8sp3h7" path="res://assets/person/noodle.png" id="1_b0aqe"]
+[ext_resource type="Script" uid="uid://c8dj2kaew8s1y" path="res://entities/person/Person.gd" id="2_1rwi4"]
+
+[resource]
+script = ExtResource("2_1rwi4")
+name = "Noodle"
+icon = ExtResource("1_b0aqe")
+max_personnel_as_leader = 1
+max_equipment_slots = 4
+daily_calories = 90
+flavor = ""

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Equipment" load_steps=3 format=3 uid="uid://b3t5yycaiukyy"]
+
+[ext_resource type="Texture2D" uid="uid://dm486per8rh3g" path="res://assets/equipment/cannon.png" id="1_7tg6u"]
+[ext_resource type="Script" uid="uid://6w7egcwp0lpn" path="res://entities/equipment/Equipment.gd" id="1_jhlkj"]
+
+[resource]
+script = ExtResource("1_jhlkj")
+name = "cannon"
+weight = 10
+cargo_capacity = 0
+icon = ExtResource("1_7tg6u")
+flavor = ""
+metadata/_custom_type_script = "uid://6w7egcwp0lpn"

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Person" load_steps=3 format=3 uid="uid://1wbw7tkt8wno"]
+
+[ext_resource type="Texture2D" uid="uid://dun6daajbuq1b" path="res://assets/person/chunk.png" id="1_dn8rh"]
+[ext_resource type="Script" uid="uid://c8dj2kaew8s1y" path="res://entities/person/Person.gd" id="2_02o41"]
+
+[resource]
+script = ExtResource("2_02o41")
+name = "Chunk"
+icon = ExtResource("1_dn8rh")
+max_personnel_as_leader = 1
+max_equipment_slots = 0
+daily_calories = 85
+flavor = ""

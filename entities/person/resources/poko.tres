@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Person" load_steps=3 format=3 uid="uid://bbku6ryqpynom"]
+
+[ext_resource type="Texture2D" uid="uid://br0tse1fw88ef" path="res://assets/person/poko.png" id="1_e6oxs"]
+[ext_resource type="Script" uid="uid://c8dj2kaew8s1y" path="res://entities/person/Person.gd" id="2_htim7"]
+
+[resource]
+script = ExtResource("2_htim7")
+name = "Poko"
+icon = ExtResource("1_e6oxs")
+max_personnel_as_leader = 1
+max_equipment_slots = 1
+daily_calories = 75
+flavor = ""

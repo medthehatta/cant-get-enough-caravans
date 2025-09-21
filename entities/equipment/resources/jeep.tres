@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Equipment" load_steps=3 format=3 uid="uid://cbs2ton7qebo0"]
+
+[ext_resource type="Texture2D" uid="uid://mt7a7mj4j4k8" path="res://assets/equipment/jeep.png" id="1_7tg6u"]
+[ext_resource type="Script" uid="uid://6w7egcwp0lpn" path="res://entities/equipment/Equipment.gd" id="1_jhlkj"]
+
+[resource]
+script = ExtResource("1_jhlkj")
+name = "jeep"
+weight = 15
+cargo_capacity = 15
+icon = ExtResource("1_7tg6u")
+flavor = ""
+metadata/_custom_type_script = "uid://6w7egcwp0lpn"

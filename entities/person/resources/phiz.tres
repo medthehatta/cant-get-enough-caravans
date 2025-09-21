@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Person" load_steps=3 format=3 uid="uid://c1eqt8jd6qk6j"]
+
+[ext_resource type="Texture2D" uid="uid://c01nt1vvoj0vh" path="res://assets/person/phiz.png" id="1_j6phv"]
+[ext_resource type="Script" uid="uid://c8dj2kaew8s1y" path="res://entities/person/Person.gd" id="2_v8k5h"]
+
+[resource]
+script = ExtResource("2_v8k5h")
+name = "Phiz"
+icon = ExtResource("1_j6phv")
+max_personnel_as_leader = 2
+max_equipment_slots = 0
+daily_calories = 75
+flavor = ""

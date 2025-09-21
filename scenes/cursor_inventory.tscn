@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://5ix2onyd1kgc"]
+
+[ext_resource type="Script" uid="uid://o35pm0yqqvtn" path="res://scenes/cursor_inventory.gd" id="1_sgp6h"]
+[ext_resource type="PackedScene" uid="uid://bp1t1va6cp0ql" path="res://scenes/inventory_grid_item.tscn" id="1_tjmjl"]
+
+[node name="CursorInventory" type="MarginContainer"]
+offset_right = 50.0
+offset_bottom = 50.1461
+script = ExtResource("1_sgp6h")
+
+[node name="Item" parent="." instance=ExtResource("1_tjmjl")]
+unique_name_in_owner = true
+z_index = 1
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = null
+empty_texture = null

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Equipment" load_steps=3 format=3 uid="uid://djb7ovijgd73r"]
+
+[ext_resource type="Texture2D" uid="uid://qb8j5xn1wc2q" path="res://assets/equipment/digital-lure.png" id="1_7tg6u"]
+[ext_resource type="Script" uid="uid://6w7egcwp0lpn" path="res://entities/equipment/Equipment.gd" id="1_jhlkj"]
+
+[resource]
+script = ExtResource("1_jhlkj")
+name = "digital-lure"
+weight = 1
+cargo_capacity = 0
+icon = ExtResource("1_7tg6u")
+flavor = ""
+metadata/_custom_type_script = "uid://6w7egcwp0lpn"

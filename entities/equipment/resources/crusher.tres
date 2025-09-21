@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Equipment" load_steps=3 format=3 uid="uid://ddf7x2iqpyiye"]
+
+[ext_resource type="Texture2D" uid="uid://m83qg5mb2sg3" path="res://assets/equipment/crusher.png" id="1_7tg6u"]
+[ext_resource type="Script" uid="uid://6w7egcwp0lpn" path="res://entities/equipment/Equipment.gd" id="1_jhlkj"]
+
+[resource]
+script = ExtResource("1_jhlkj")
+name = "crusher"
+weight = 15
+cargo_capacity = 10
+icon = ExtResource("1_7tg6u")
+flavor = ""
+metadata/_custom_type_script = "uid://6w7egcwp0lpn"

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ScriptTypeValidator" load_steps=3 format=3 uid="uid://dyimig3qer5nd"]
+
+[ext_resource type="Script" uid="uid://b2exa8g1k31a7" path="res://entities/validator/subclasses/ScriptTypeValidator.gd" id="1_jst78"]
+[ext_resource type="Script" uid="uid://6w7egcwp0lpn" path="res://entities/equipment/Equipment.gd" id="2_xgpe2"]
+
+[resource]
+script = ExtResource("1_jst78")
+script_type = ExtResource("2_xgpe2")
+debug = false
+metadata/_custom_type_script = "uid://b2exa8g1k31a7"

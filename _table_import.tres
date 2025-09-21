@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ResourceTablesImport" load_steps=3 format=3 uid="uid://cx14mdhpxctlb"]
+
+[ext_resource type="Script" uid="uid://dk6b4eht76v3x" path="res://addons/resources_spreadsheet_view/import_export/spreadsheet_import.gd" id="2_pjrpb"]
+[ext_resource type="Script" uid="uid://darvq7n1f561a" path="res://addons/resources_spreadsheet_view/import_export/formats_edit/edit_csv.gd" id="3_dqh1r"]
+
+[resource]
+script = ExtResource("2_pjrpb")
+prop_types = [3, 3, 3, 5, 1, 1, 1, 3]
+prop_names = ["resource_path", "resource_name", "name", "icon", "max_personnel_as_leader", "max_equipment_slots", "daily_calories", "flavor"]
+edited_path = "res://.csv"
+prop_used_as_filename = ""
+script_classname = ""
+remove_first_row = true
+view_script = ExtResource("3_dqh1r")
+delimeter = ";"
+enum_format = [2, " ", "Yes", "No"]
+uniques = {}

@@ -1,0 +1,12 @@
+trello and vscode integration?
+introduce path / traversal object which is basically a list of tiles with their properties
+    - the idea is this can be provided to a ExpeditionEvaluator with the
+      Expedition/Caravan and it will estimate the dynamic properties like xp,
+      stress, durability etc
+XP gain (person)
+stress gain (person)
+durability loss (equipment)
+calorie consumption (person)
+fuel / power consumption (equipment)
+inventory slot to show stacks
+"teaching" stat?  (or does xp of a certain type give you it automatically?)

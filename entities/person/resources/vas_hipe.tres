@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Person" load_steps=3 format=3 uid="uid://c7og8fvqx6n0i"]
+
+[ext_resource type="Texture2D" uid="uid://d0eh1osfukrrv" path="res://assets/person/vas-hipe.png" id="1_i0n8f"]
+[ext_resource type="Script" uid="uid://c8dj2kaew8s1y" path="res://entities/person/Person.gd" id="1_ygp5r"]
+
+[resource]
+script = ExtResource("1_ygp5r")
+name = "Vas Hipe"
+icon = ExtResource("1_i0n8f")
+max_personnel_as_leader = 1
+max_equipment_slots = 20
+daily_calories = 22
+flavor = "A disgruntled ex-miner, now just a disembodied head."

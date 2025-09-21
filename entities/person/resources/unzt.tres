@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Person" load_steps=3 format=3 uid="uid://3dx688x7cu2c"]
+
+[ext_resource type="Texture2D" uid="uid://o3nfcg4j0xby" path="res://assets/person/unzt.png" id="1_7q66o"]
+[ext_resource type="Script" uid="uid://c8dj2kaew8s1y" path="res://entities/person/Person.gd" id="2_an64f"]
+
+[resource]
+script = ExtResource("2_an64f")
+name = "Unzt"
+icon = ExtResource("1_7q66o")
+max_personnel_as_leader = 1
+max_equipment_slots = 2
+daily_calories = 80
+flavor = ""
