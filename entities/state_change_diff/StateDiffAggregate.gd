@@ -10,6 +10,9 @@ func active(r: Resource):
 
 
 func append(s: StateChangeDiff):
+    if s is NoOpStateDiff:
+        return
+
     seq.append(s)
     originators[s.originator] = originators.get(s.originator, 0) + 1
 
