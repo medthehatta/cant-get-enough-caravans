@@ -26,7 +26,9 @@ func dynamic_stats():
 
 
 # Override because we need to talk to our children
-func respond(event: String, args: Dictionary, current: StateDiffAggregate):
+func respond(event: String, args: Dictionary = {}, current: StateDiffAggregate = null):
+    current = current if current else StateDiffAggregate.new()
+
     var responses = StateDiffAggregate.new()
 
     responses.append_array(leader.respond(event, args, current))

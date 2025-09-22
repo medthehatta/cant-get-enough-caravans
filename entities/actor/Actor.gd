@@ -6,7 +6,8 @@ class_name Actor
 @export var auras: Array[Aura] = []
 
 
-func respond(event: String, args: Dictionary, current: StateDiffAggregate):
+func respond(event: String, args: Dictionary = {}, current: StateDiffAggregate = null):
+    current = current if current else StateDiffAggregate.new()
     var responses = StateDiffAggregate.new()
     for aura in auras:
         if current.active(aura):
