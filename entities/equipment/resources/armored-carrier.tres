@@ -1,13 +1,16 @@
-[gd_resource type="Resource" script_class="TransportEquipment" load_steps=3 format=3 uid="uid://bd16diywec47b"]
+[gd_resource type="Resource" script_class="Equipment" load_steps=3 format=3 uid="uid://bd16diywec47b"]
 
-[ext_resource type="Texture2D" uid="uid://gqwdh15c1ce6" path="res://assets/equipment/armored-carrier.png" id="1_7tg6u"]
-[ext_resource type="Script" uid="uid://c2wla63u37i1u" path="res://entities/equipment/subclasses/TransportEquipment.gd" id="2_vjn28"]
+[ext_resource type="Script" uid="uid://mkfdrnp38w18" path="res://entities/aura/Aura.gd" id="1_vjn28"]
+[ext_resource type="Script" uid="uid://6w7egcwp0lpn" path="res://entities/equipment/Equipment.gd" id="2_jfdtg"]
 
 [resource]
-script = ExtResource("2_vjn28")
-name = "armored-carrier"
+script = ExtResource("2_jfdtg")
 weight = 50
 cargo_capacity = 50
-icon = ExtResource("1_7tg6u")
 flavor = ""
+durability = 1
+integrity = 100
+power_demand = 0
+name = ""
+auras = Array[ExtResource("1_vjn28")]([])
 metadata/_custom_type_script = "uid://6w7egcwp0lpn"

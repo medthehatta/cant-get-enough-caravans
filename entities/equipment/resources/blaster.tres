@@ -1,13 +1,16 @@
-[gd_resource type="Resource" script_class="WeaponEquipment" load_steps=3 format=3 uid="uid://bbjswqf26dixa"]
+[gd_resource type="Resource" script_class="Equipment" load_steps=3 format=3 uid="uid://bbjswqf26dixa"]
 
-[ext_resource type="Texture2D" uid="uid://1yjcrqcvhtsc" path="res://assets/equipment/blaster.png" id="1_7tg6u"]
-[ext_resource type="Script" uid="uid://d1myelvvylpxm" path="res://entities/equipment/subclasses/WeaponEquipment.gd" id="2_if2an"]
+[ext_resource type="Script" uid="uid://mkfdrnp38w18" path="res://entities/aura/Aura.gd" id="1_if2an"]
+[ext_resource type="Script" uid="uid://6w7egcwp0lpn" path="res://entities/equipment/Equipment.gd" id="2_ypa6t"]
 
 [resource]
-script = ExtResource("2_if2an")
-name = "blaster"
-weight = 1
+script = ExtResource("2_ypa6t")
+weight = 0
 cargo_capacity = 0
-icon = ExtResource("1_7tg6u")
 flavor = ""
+durability = 1
+integrity = 100
+power_demand = 0
+name = ""
+auras = Array[ExtResource("1_if2an")]([])
 metadata/_custom_type_script = "uid://6w7egcwp0lpn"
