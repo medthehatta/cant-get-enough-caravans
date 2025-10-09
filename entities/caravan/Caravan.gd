@@ -8,6 +8,10 @@ class_name Caravan
 # TODO: Temporary measures of food and power consumption
 @export var food_calories: int
 @export var equipment_power: int
+@export var weight: int
+
+
+var mods = ModifierFactory.new()
 
 
 func base_stats():
@@ -21,8 +25,17 @@ func dynamic_stats():
     return {
         "remaining_food_calories": food_calories,
         "remaining_equipment_power": equipment_power,
+        "weight": weight,
         "auras": auras,
     }
+
+
+func _modify(event: String, _initial: Variant):
+    if event == "traverse_speed":
+        return [mods.multiply_attribute("speed", int(1 / float(weight)))]
+
+    else:
+        return []
 
 
 # Override because we need to talk to our children
@@ -38,7 +51,7 @@ func modify(event: String, initial: Variant):
         responses.append_array(device.modify(event, initial))
 
     # Do self last
-    responses.append_array(super.modify(event, initial))
+    responses.append_array(_modify(event, initial))
 
     return responses
 
@@ -73,6 +86,7 @@ func consume_caravan_resources(consumption):
 
     # Consume food calories
     # TODO: This should actually consume inventory items, but we're not modeling that yet
+    # TODO: This should also reduce the weight
     if food_calories >= consumed_calories:
         food_calories -= consumed_calories
     else:
@@ -84,6 +98,7 @@ func consume_caravan_resources(consumption):
         consumed_power += modified_consumption
 
     # Consume power
+    # TODO: This should also reduce the weight if the power is consumed from physical fuel
     if equipment_power >= consumed_power:
         equipment_power -= consumed_power
     else:
