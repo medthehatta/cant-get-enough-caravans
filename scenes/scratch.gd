@@ -21,6 +21,8 @@ func _ready():
 
     cursor_inventory.visible = true
 
+    print([3].reduce(func(acc, x): return acc + x))
+
 
 func _on_cursor_placed(resource, dest):
     var dest_grid = dest.grid

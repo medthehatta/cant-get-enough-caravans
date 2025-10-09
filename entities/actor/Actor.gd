@@ -6,12 +6,16 @@ class_name Actor
 @export var auras: Array[Aura] = []
 
 
-func respond(event: String, args: Dictionary = {}, current: StateDiffAggregate = null):
-    current = current if current else StateDiffAggregate.new()
-    var responses = StateDiffAggregate.new()
+func modify(event: String, initial: Variant):
+    var mods = []
     for aura in auras:
-        if current.active(aura):
-            continue
-        var response = aura.respond(event, args, current)
-        responses.append(response)
-    return responses
+        var mod = aura.modify(event, initial)
+        mods.append_array(mod)
+    return mods
+
+
+func collect(event: String, initial: Variant):
+    var modifiers = modify(event, initial)
+    # TODO: Ordering
+    var modified = Modifier.modified(initial, modifiers)
+    return modified
