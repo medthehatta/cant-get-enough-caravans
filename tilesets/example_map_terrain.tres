@@ -1,39 +1,91 @@
-[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://bolc3xf27oref"]
+[gd_resource type="TileSet" load_steps=28 format=3 uid="uid://bolc3xf27oref"]
 
-[ext_resource type="Texture2D" uid="uid://b6tfwx4jdmohv" path="res://assets/terrain/vectoraith_tileset_terrain_3x3_alpine_32x32.png" id="1_3s5p8"]
+[ext_resource type="Resource" uid="uid://bj62qdhhsp6n2" path="res://entities/map_tile/resources/dirt.tres" id="1_5f6rm"]
+[ext_resource type="Texture2D" uid="uid://bkqd71isd4l31" path="res://assets/terrain/vectoraith_tileset_terrain_3x3_wetland_32x32.png" id="2_03qhg"]
 [ext_resource type="Texture2D" uid="uid://so2u8pu88jgs" path="res://assets/terrain/vectoraith_tileset_terrain_3x3_alpine_B_32x32.png" id="2_ndabk"]
+[ext_resource type="Resource" uid="uid://drhvyrg0vh7tn" path="res://entities/map_tile/resources/dead_grass.tres" id="3_a3eqw"]
+[ext_resource type="Resource" uid="uid://bokjax1kwcfgn" path="res://entities/map_tile/resources/arid_dirt.tres" id="4_w0576"]
+[ext_resource type="Texture2D" uid="uid://b3caircxss4mn" path="res://assets/terrain/vectoraith_tileset_terrain_3x3_temperate_forest_B_32x32.png" id="5_y8byu"]
+[ext_resource type="Resource" uid="uid://cxnwb6h1q8edi" path="res://entities/map_tile/resources/chalk.tres" id="6_si8pv"]
+[ext_resource type="Resource" uid="uid://b4tb2hrgvgqoq" path="res://entities/map_tile/resources/chalky_dirt.tres" id="7_tl3bo"]
+[ext_resource type="Texture2D" uid="uid://cc3exd1nsxqny" path="res://assets/terrain/vectoraith_tileset_terrain_3x3_scrubland_32x32.png" id="8_vjurv"]
+[ext_resource type="Resource" uid="uid://5mu6pp2ynsif" path="res://entities/map_tile/resources/dry_field.tres" id="9_3g10c"]
+[ext_resource type="Resource" uid="uid://cwxsksxv2xtnf" path="res://entities/map_tile/resources/rich_dirt.tres" id="10_bbfvi"]
+[ext_resource type="Texture2D" uid="uid://7rg1t8he05v0" path="res://assets/terrain/vectoraith_tileset_terrain_3x3_savannah_32x32.png" id="11_e0cek"]
+[ext_resource type="Resource" uid="uid://cc4ncf7wi6knd" path="res://entities/map_tile/resources/sand.tres" id="12_3uud4"]
+[ext_resource type="Resource" uid="uid://cgdspsku1r7at" path="res://entities/map_tile/resources/wet_sand.tres" id="13_8i2y7"]
+[ext_resource type="Texture2D" uid="uid://dbc4dwcr8h258" path="res://assets/terrain/vectoraith_tileset_terrain_3x3_desert_32x32.png" id="14_w16wl"]
+[ext_resource type="Resource" uid="uid://d4gnf08hhruda" path="res://entities/map_tile/resources/gravel.tres" id="15_r2apf"]
+[ext_resource type="Resource" uid="uid://d2dnftph8y85r" path="res://entities/map_tile/resources/grass.tres" id="16_rxqo1"]
+[ext_resource type="Resource" uid="uid://ci3le45f3gldl" path="res://entities/map_tile/resources/cave_dirt.tres" id="18_5fd7f"]
+[ext_resource type="Resource" uid="uid://bynq76782epnh" path="res://entities/map_tile/resources/cave_soil.tres" id="19_hmnb2"]
+[ext_resource type="Texture2D" uid="uid://dddvvm17wo737" path="res://assets/terrain/vectoraith_tileset_terrain_3x3_cave_32x32.png" id="20_43vq3"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_t6qq7"]
-texture = ExtResource("1_3s5p8")
-12:0/0 = 0
-12:1/0 = 0
-13:1/0 = 0
-14:1/0 = 0
-15:1/0 = 0
-15:0/0 = 0
-14:0/0 = 0
-13:0/0 = 0
-17:3/0 = 0
-17:4/0 = 0
-18:4/0 = 0
-18:3/0 = 0
-20:7/0 = 0
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_weggs"]
+texture = ExtResource("2_03qhg")
+texture_region_size = Vector2i(32, 32)
+9:0/0 = 0
+9:0/0/custom_data_0 = ExtResource("1_5f6rm")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oopgf"]
+texture = ExtResource("5_y8byu")
+texture_region_size = Vector2i(32, 32)
+9:3/0 = 0
+9:3/0/custom_data_0 = ExtResource("3_a3eqw")
+9:7/0 = 0
+9:7/0/custom_data_0 = ExtResource("4_w0576")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8v43w"]
+texture = ExtResource("8_vjurv")
+texture_region_size = Vector2i(32, 32)
+9:3/0 = 0
+9:3/0/custom_data_0 = ExtResource("6_si8pv")
+9:7/0 = 0
+9:7/0/custom_data_0 = ExtResource("7_tl3bo")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2hm3o"]
+texture = ExtResource("11_e0cek")
+texture_region_size = Vector2i(32, 32)
+9:3/0 = 0
+9:3/0/custom_data_0 = ExtResource("9_3g10c")
+9:7/0 = 0
+9:7/0/custom_data_0 = ExtResource("10_bbfvi")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sqf57"]
+texture = ExtResource("14_w16wl")
+texture_region_size = Vector2i(32, 32)
+9:3/0 = 0
+9:3/0/custom_data_0 = ExtResource("12_3uud4")
+9:7/0 = 0
+9:7/0/custom_data_0 = ExtResource("13_8i2y7")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_n47kn"]
 texture = ExtResource("2_ndabk")
 texture_region_size = Vector2i(32, 32)
-9:6/0 = 0
-9:7/0 = 0
-10:7/0 = 0
-9:2/0 = 0
 9:3/0 = 0
-10:3/0 = 0
-7:0/0 = 0
-6:0/0 = 0
+9:3/0/custom_data_0 = ExtResource("15_r2apf")
+9:7/0 = 0
+9:7/0/custom_data_0 = ExtResource("16_rxqo1")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p4sua"]
+texture = ExtResource("20_43vq3")
+texture_region_size = Vector2i(32, 32)
+9:3/0 = 0
+9:3/0/custom_data_0 = ExtResource("18_5fd7f")
+9:7/0 = 0
+9:7/0/custom_data_0 = ExtResource("19_hmnb2")
 
 [resource]
-sources/3 = SubResource("TileSetAtlasSource_t6qq7")
+tile_size = Vector2i(32, 32)
+custom_data_layer_0/name = "map_tile"
+custom_data_layer_0/type = 24
 sources/5 = SubResource("TileSetAtlasSource_n47kn")
+sources/0 = SubResource("TileSetAtlasSource_weggs")
+sources/1 = SubResource("TileSetAtlasSource_oopgf")
+sources/2 = SubResource("TileSetAtlasSource_8v43w")
+sources/3 = SubResource("TileSetAtlasSource_2hm3o")
+sources/4 = SubResource("TileSetAtlasSource_sqf57")
+sources/6 = SubResource("TileSetAtlasSource_p4sua")
 metadata/_better_terrain = {
 &"decoration": ["Decoration", Color(0.411765, 0.411765, 0.411765, 1), 3, [], {
 &"path": "res://addons/better-terrain/icons/Decoration.svg"
