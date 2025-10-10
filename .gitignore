@@ -4,3 +4,4 @@
 export.cfg
 export_presets.cfg
 *.translation
+addons/resources_spreadsheet_view/saved_state.json
