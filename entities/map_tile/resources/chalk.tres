@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="MapTile" load_steps=2 format=3 uid="uid://cxnwb6h1q8edi"]
+
+[ext_resource type="Script" uid="uid://bw1sno3k54nv4" path="res://entities/map_tile/MapTile.gd" id="1_ue22m"]
+
+[resource]
+script = ExtResource("1_ue22m")
+biome = "chalk"
+density = 1
+metadata/_custom_type_script = "uid://bw1sno3k54nv4"
