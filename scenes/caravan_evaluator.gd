@@ -85,6 +85,8 @@ func get_weight():
 
 
 func get_daily_calories():
+    if not leader:
+        return 0
     return leader.daily_calories + sum_property("daily_calories", personnel)
 
 
@@ -100,3 +102,14 @@ func get_num_equipment_slots():
 
 func get_cargo_capacity():
     return sum_property("cargo_capacity", personnel) + sum_property("cargo_capacity", equipment)
+
+
+func emit_caravan():
+    var caravan = Caravan.new()
+    caravan.leader = leader
+    caravan.personnel = personnel
+    caravan.equipment = equipment
+    caravan.food_calories = 900 # temp
+    caravan.equipment_power = 900 # temp
+    caravan.weight = get_weight()
+    return caravan

@@ -30,12 +30,8 @@ func dynamic_stats():
     }
 
 
-func _modify(event: String, _initial: Variant):
-    if event == "traverse_speed":
-        return [mods.multiply_attribute("speed", int(1 / float(weight)))]
-
-    else:
-        return []
+func _modify(_event: String, _initial: Variant):
+    return []
 
 
 # Override because we need to talk to our children

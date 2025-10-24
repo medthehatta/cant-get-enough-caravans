@@ -10,6 +10,8 @@ extends Control
 @export var property_icons: PropertyIcons
 @export var example_resources: Array[Resource]
 
+var expeditions: Array[Expedition] = []
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -108,3 +110,22 @@ func _on_stat_summary_meta_hover_started(meta: Variant) -> void:
 
 func _on_stat_summary_meta_hover_ended(_meta: Variant) -> void:
     %Tooltip.clear_text()
+
+
+func _on_button_2_pressed() -> void:
+    var caravan = caravan_evaluator.emit_caravan()
+    var route = %ExampleMap.route()
+    var expedition = Expedition.new()
+    expedition.caravan = caravan
+    expedition.route = route
+
+    expeditions.append(expedition)
+
+
+func _physics_process(delta: float):
+    for expedition in expeditions:
+        expedition.traverse(delta)
+        print("+++")
+        print(expedition.remaining_tile_progress)
+        print(expedition.caravan.dynamic_stats())
+        print("---")

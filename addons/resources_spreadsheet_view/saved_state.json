@@ -72,6 +72,17 @@
         "visibility": 0.0
       }
     },
+    "res://entities/map_tile/resources/": {
+      "metadata/_custom_type_script": {
+        "visibility": 0.0
+      },
+      "resource_local_to_scene": {
+        "visibility": 0.0
+      },
+      "resource_name": {
+        "visibility": 0.0
+      }
+    },
     "res://entities/person/": {
       "metadata/_custom_type_script": {
         "visibility": 0.0
@@ -90,7 +101,8 @@
     "res://",
     "res://entities/equipment/resources/",
     "res://entities/person/",
-    "res://_table_import.tres"
+    "res://_table_import.tres",
+    "res://entities/map_tile/resources/"
   ],
   "table_functions": {
     "filter": [

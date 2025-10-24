@@ -3,7 +3,7 @@ class_name AddToAttributeModifier
 
 
 @export var attribute: String
-@export var value: int
+@export var value: float
 
 
 func apply(inp):

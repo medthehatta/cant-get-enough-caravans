@@ -2,12 +2,11 @@ extends Resource
 class_name Expedition
 
 
-@export var tile_size: int
 @export var caravan: Caravan
-@export var tiles: Array[MapTile]
+@export var route: Array[MapTile]
 
 
-var duration = 0
+var remaining_tile_progress = null
 
 var tile_index = 0
 
@@ -27,16 +26,32 @@ func _base_xp_for(tile):
     return {tile.biome: 10}
 
 
-func _base_speed_for(tile):
-    return {"biome": tile.biome, "speed": int(1000 / tile.density)}
+func _progress_required_for(tile):
+    return tile.density
 
 
-func traverse(tile):
-    # Calculate time accrued
-    var initial_speed = _base_speed_for(tile)
+# Return bool for now: whether to continue or whether the expedition is over
+func traverse(delta: float) -> bool:
+    var tile: MapTile
+
+    if remaining_tile_progress != null and remaining_tile_progress <= 0:
+        remaining_tile_progress = null
+
+        # FIXME: should this be route.size() - 1?
+        if tile_index < route.size():
+            tile_index += 1
+        else:
+            tile_index = 0
+            return false
+
+    tile = route[tile_index]
+
+    if remaining_tile_progress == null:
+        remaining_tile_progress = _progress_required_for(tile)
+
+    var initial_speed = {"speed": 1}
     var modified_speed = caravan.collect("traverse_speed", initial_speed)
-    var new_duration = tile_size / modified_speed
-    duration += new_duration
+    remaining_tile_progress -= int(modified_speed["speed"] * delta)
 
     # Inflict integrity damage
     var base_damage = _base_damage_for(tile)
@@ -54,21 +69,11 @@ func traverse(tile):
     caravan.contribute_xp_to_caravan(modified_xp)
 
     # Consume resources
-    var base_consumption = {"biome": tile.biome, "duration": new_duration}
+    var base_consumption = {"biome": tile.biome, "speed": modified_speed}
     var modified_consumption = caravan.collect("consume_caravan_resources", base_consumption)
     caravan.consume_caravan_resources(modified_consumption)
 
     # Drop loot
     # TODO
 
-
-func traverse_next():
-    if tiles.size() >= tile_index + 1:
-        tile_index += 1
-    else:
-        assert(false) # die
-
-    var tile = tiles[tile_index]
-    traverse(tile)
-    # DEBUG
-    print(caravan.dynamic_stats())
+    return true

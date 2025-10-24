@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://cp6q0kwkmd886"]
+[gd_scene load_steps=38 format=3 uid="uid://cp6q0kwkmd886"]
 
 [ext_resource type="Script" uid="uid://bfnrjl1k57lvh" path="res://scenes/scratch.gd" id="1_mbcf5"]
 [ext_resource type="PackedScene" uid="uid://c20p5ssbao33o" path="res://scenes/inventory_grid.tscn" id="1_ufdn1"]
@@ -30,6 +30,13 @@
 [ext_resource type="Resource" uid="uid://dhee2gifcuwe3" path="res://entities/equipment/resources/fluid-canister.tres" id="19_dc0vr"]
 [ext_resource type="Resource" uid="uid://cbs2ton7qebo0" path="res://entities/equipment/resources/jeep.tres" id="20_fq5e3"]
 [ext_resource type="Resource" uid="uid://nrlokvlwc4ij" path="res://entities/equipment/resources/large-transport.tres" id="21_ef4gy"]
+[ext_resource type="PackedScene" uid="uid://dd3ylot0q3tol" path="res://scenes/example_map.tscn" id="22_jmbua"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a4lx6"]
+bg_color = Color(0.151276, 0.151276, 0.151276, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jmbua"]
+bg_color = Color(0.259294, 0.259294, 0.259294, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_38mul"]
 gradient = ExtResource("14_38mul")
@@ -40,8 +47,8 @@ gradient = ExtResource("14_38mul")
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_p6vma"]
 gradient = ExtResource("14_38mul")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a4lx6"]
-bg_color = Color(0.151276, 0.151276, 0.151276, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvahf"]
+bg_color = Color(0.169245, 0.169245, 0.169245, 1)
 
 [node name="Scratch" type="Control" node_paths=PackedStringArray("property_icons")]
 layout_mode = 3
@@ -53,6 +60,10 @@ grow_vertical = 2
 script = ExtResource("1_mbcf5")
 property_icons = NodePath("PropertyIcons")
 example_resources = Array[Resource]([ExtResource("2_eikx3"), ExtResource("3_epfvx"), ExtResource("4_ckrcg"), ExtResource("5_1ybip"), ExtResource("6_0arob"), ExtResource("7_jsre1"), ExtResource("8_40b10"), ExtResource("9_a4lx6"), ExtResource("10_jmbua"), ExtResource("11_vvahf"), ExtResource("12_q062q"), ExtResource("13_0dnsp"), ExtResource("14_pjqha"), ExtResource("15_j4ha0"), ExtResource("16_qwho5"), ExtResource("17_kah22"), ExtResource("18_2rqku"), ExtResource("19_dc0vr"), ExtResource("20_fq5e3"), ExtResource("21_ef4gy")])
+
+[node name="ExampleMap" parent="." instance=ExtResource("22_jmbua")]
+unique_name_in_owner = true
+position = Vector2(446, 78)
 
 [node name="PropertyIcons" parent="." instance=ExtResource("9_cirwj")]
 unique_name_in_owner = true
@@ -73,72 +84,6 @@ visible = false
 layout_mode = 0
 offset_bottom = 50.0
 
-[node name="inventory" parent="." instance=ExtResource("1_ufdn1")]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_right = 0.0
-offset_left = 17.0
-offset_top = -157.0
-offset_right = 702.0
-offset_bottom = -19.0
-grow_horizontal = 1
-grow_vertical = 0
-num_columns = 10
-num_slots = 20
-
-[node name="leader" parent="." instance=ExtResource("1_ufdn1")]
-unique_name_in_owner = true
-layout_mode = 0
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 19.0
-offset_top = 87.0
-offset_right = 102.0
-offset_bottom = 170.0
-grow_horizontal = 1
-grow_vertical = 1
-texture = SubResource("GradientTexture1D_38mul")
-validator = ExtResource("15_38mul")
-columns_from_square = true
-
-[node name="personnel" parent="." instance=ExtResource("1_ufdn1")]
-unique_name_in_owner = true
-layout_mode = 0
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 265.0
-offset_top = 90.0
-offset_right = 345.0
-offset_bottom = 170.0
-grow_horizontal = 1
-grow_vertical = 1
-texture = SubResource("GradientTexture1D_3ftal")
-validator = ExtResource("15_38mul")
-num_columns = 6
-num_slots = 0
-columns_from_square = true
-
-[node name="equipment" parent="." instance=ExtResource("1_ufdn1")]
-unique_name_in_owner = true
-layout_mode = 0
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 19.0
-offset_top = 236.0
-offset_right = 705.0
-offset_bottom = 475.0
-grow_horizontal = 1
-grow_vertical = 1
-texture = SubResource("GradientTexture1D_p6vma")
-validator = ExtResource("16_ufrhx")
-num_columns = 8
-num_slots = 0
-
 [node name="StatSummary" type="RichTextLabel" parent="."]
 unique_name_in_owner = true
 clip_contents = false
@@ -154,12 +99,95 @@ vertical_alignment = 1
 meta_underlined = false
 hint_underlined = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="Panel" type="Panel" parent="."]
 layout_mode = 0
+offset_left = -1.0
+offset_top = 107.0
+offset_right = 408.0
+offset_bottom = 495.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_jmbua")
+
+[node name="inventory" parent="Panel" instance=ExtResource("1_ufdn1")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_right = 0.0
+offset_left = 12.0
+offset_top = -91.0
+offset_right = 697.0
+offset_bottom = 47.0
+grow_horizontal = 1
+grow_vertical = 0
+scale = Vector2(0.56, 0.56)
+mouse_filter = 1
+num_columns = 10
+num_slots = 20
+
+[node name="leader" parent="Panel" instance=ExtResource("1_ufdn1")]
+unique_name_in_owner = true
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_left = 21.0
-offset_top = 50.0
-offset_right = 99.0
-offset_bottom = 81.0
+offset_top = 31.0
+offset_right = 104.0
+offset_bottom = 114.0
+grow_horizontal = 1
+grow_vertical = 1
+scale = Vector2(0.56, 0.56)
+mouse_filter = 1
+texture = SubResource("GradientTexture1D_38mul")
+validator = ExtResource("15_38mul")
+columns_from_square = true
+
+[node name="personnel" parent="Panel" instance=ExtResource("1_ufdn1")]
+unique_name_in_owner = true
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 105.0
+offset_top = 34.0
+offset_right = 185.0
+offset_bottom = 114.0
+grow_horizontal = 1
+grow_vertical = 1
+scale = Vector2(0.56, 0.56)
+mouse_filter = 1
+texture = SubResource("GradientTexture1D_3ftal")
+validator = ExtResource("15_38mul")
+num_columns = 6
+num_slots = 0
+columns_from_square = true
+
+[node name="equipment" parent="Panel" instance=ExtResource("1_ufdn1")]
+unique_name_in_owner = true
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 10.0
+offset_top = 140.0
+offset_right = 696.0
+offset_bottom = 379.0
+grow_horizontal = 1
+grow_vertical = 1
+scale = Vector2(0.56, 0.56)
+mouse_filter = 1
+texture = SubResource("GradientTexture1D_p6vma")
+validator = ExtResource("16_ufrhx")
+num_columns = 8
+num_slots = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 98.0
+offset_bottom = 41.0
+scale = Vector2(0.56, 0.56)
 theme = ExtResource("11_n0phd")
 bbcode_enabled = true
 text = "[b]Leader[/b]"
@@ -168,12 +196,13 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+[node name="RichTextLabel2" type="RichTextLabel" parent="Panel"]
 layout_mode = 0
-offset_left = 266.0
-offset_top = 52.0
-offset_right = 385.0
-offset_bottom = 83.0
+offset_left = 103.0
+offset_top = 11.0
+offset_right = 222.0
+offset_bottom = 42.0
+scale = Vector2(0.56, 0.56)
 theme = ExtResource("11_n0phd")
 bbcode_enabled = true
 text = "[b]Personnel[/b]"
@@ -182,12 +211,13 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="RichTextLabel3" type="RichTextLabel" parent="."]
+[node name="RichTextLabel3" type="RichTextLabel" parent="Panel"]
 layout_mode = 0
-offset_left = 23.0
-offset_top = 193.0
-offset_right = 147.0
-offset_bottom = 224.0
+offset_left = 11.0
+offset_top = 122.0
+offset_right = 135.0
+offset_bottom = 153.0
+scale = Vector2(0.56, 0.56)
 theme = ExtResource("11_n0phd")
 bbcode_enabled = true
 text = "[b]Equipment[/b]"
@@ -196,11 +226,31 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 45.0
+offset_right = 194.0
+offset_bottom = 102.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_vvahf")
+text = "Check route"
+
+[node name="Button2" type="Button" parent="."]
+layout_mode = 0
+offset_left = 207.0
+offset_top = 45.0
+offset_right = 394.0
+offset_bottom = 102.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_vvahf")
+text = "Prepare expedition"
+
 [connection signal="picked" from="cursor" to="." method="_on_cursor_picked"]
 [connection signal="placed" from="cursor" to="." method="_on_cursor_placed"]
-[connection signal="resource_clicked" from="inventory" to="cursor" method="on_grid_item_clicked"]
-[connection signal="resource_clicked" from="leader" to="cursor" method="on_grid_item_clicked"]
-[connection signal="resource_clicked" from="personnel" to="cursor" method="on_grid_item_clicked"]
-[connection signal="resource_clicked" from="equipment" to="cursor" method="on_grid_item_clicked"]
 [connection signal="meta_hover_ended" from="StatSummary" to="." method="_on_stat_summary_meta_hover_ended"]
 [connection signal="meta_hover_started" from="StatSummary" to="." method="_on_stat_summary_meta_hover_started"]
+[connection signal="resource_clicked" from="Panel/inventory" to="cursor" method="on_grid_item_clicked"]
+[connection signal="resource_clicked" from="Panel/leader" to="cursor" method="on_grid_item_clicked"]
+[connection signal="resource_clicked" from="Panel/personnel" to="cursor" method="on_grid_item_clicked"]
+[connection signal="resource_clicked" from="Panel/equipment" to="cursor" method="on_grid_item_clicked"]
+[connection signal="pressed" from="Button" to="ExampleMap" method="_on_button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]

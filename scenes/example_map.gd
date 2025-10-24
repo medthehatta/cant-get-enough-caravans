@@ -1,40 +1,72 @@
 extends Node2D
 
+
+@onready var background_map = %BackgroundMap
+@onready var cell_highlight = %CellHighlight
+@onready var pathline = %PathLine
+@onready var pathline_ahead = %PathLineAhead
+
 var highlighted: Vector2i = Vector2i(0, 0)
 
 
 func _ready():
-    %PathLine.position = %BackgroundMap.map_to_local(%BackgroundMap.local_to_map(%PathLine.position))
+    pathline.position = background_map.map_to_local(background_map.local_to_map(pathline.position))
 
 
 func _input(event):
     if event is InputEventMouseButton:
-        var pos = event.position
+        var pos = event.position - position
+        var tile_rect = background_map.get_used_rect()
+        var pixel_rect = Rect2(
+            background_map.map_to_local(tile_rect.position),
+            tile_rect.size * background_map.tile_set.tile_size,
+        )
+        var global_rect = Rect2(
+            background_map.to_global(pixel_rect.position),
+            pixel_rect.size
+        )
+        if not global_rect.has_point(to_global(pos)):
+            return
         if event.pressed and event.button_index == 1:
             add_point(pos)
         elif event.pressed and event.button_index == 2:
             remove_point()
+
     elif event is InputEventMouseMotion:
-        var pos = event.position
-        propose_point(pos)
+        var pos = event.position - position
+        var tile_rect = background_map.get_used_rect()
+        var pixel_rect = Rect2(
+            background_map.map_to_local(tile_rect.position),
+            tile_rect.size * background_map.tile_set.tile_size,
+        )
+        var global_rect = Rect2(
+            background_map.to_global(pixel_rect.position),
+            pixel_rect.size
+        )
+        if not global_rect.has_point(to_global(pos)):
+            var count = pathline.get_point_count()
+            propose_point(pathline.position + pathline.get_point_position(count - 1))
+        else:
+            propose_point(pos)
 
 
 func snap_to_map(pt: Vector2):
-    return %BackgroundMap.map_to_local(%BackgroundMap.local_to_map(pt))
+    return background_map.map_to_local(background_map.local_to_map(pt))
 
 
 func highlight_cell_tile(coords: Vector2i):
-    %CellHighlight.erase_cell(highlighted)
+    const highlight_atlas_coord = Vector2i(12, 1)
+    cell_highlight.erase_cell(highlighted)
     highlighted = coords
-    %CellHighlight.set_cell(coords, 1, Vector2i(1, 0))
+    cell_highlight.set_cell(coords, 1, highlight_atlas_coord)
 
 
 func propose_point(pt: Vector2):
-    var base = %PathLine.position
-    var count = %PathLine.get_point_count()
-    var prev = base + %PathLine.get_point_position(count - 1)
-    var map_prev = %BackgroundMap.local_to_map(prev)
-    var map_coords = %BackgroundMap.local_to_map(pt)
+    var base = pathline.position
+    var count = pathline.get_point_count()
+    var prev = base + pathline.get_point_position(count - 1)
+    var map_prev = background_map.local_to_map(prev)
+    var map_coords = background_map.local_to_map(pt)
 
     var map_diff = map_coords - map_prev
 
@@ -42,21 +74,21 @@ func propose_point(pt: Vector2):
         return
 
     if abs(map_diff.x) < abs(map_diff.y):
-        var p = %BackgroundMap.map_to_local(Vector2i(map_prev.x, map_coords.y)) - %PathLineAhead.position - base
-        %PathLineAhead.set_point_position(1, p)
+        var p = background_map.map_to_local(Vector2i(map_prev.x, map_coords.y)) - pathline_ahead.position - base
+        pathline_ahead.set_point_position(1, p)
         highlight_cell_tile(Vector2i(map_prev.x, map_coords.y))
     else:
-        var p = %BackgroundMap.map_to_local(Vector2i(map_coords.x, map_prev.y)) - %PathLineAhead.position - base
-        %PathLineAhead.set_point_position(1, p)
+        var p = background_map.map_to_local(Vector2i(map_coords.x, map_prev.y)) - pathline_ahead.position - base
+        pathline_ahead.set_point_position(1, p)
         highlight_cell_tile(Vector2i(map_coords.x, map_prev.y))
 
 
 func add_point(pt: Vector2):
-    var base = %PathLine.position
-    var count = %PathLine.get_point_count()
-    var prev = base + %PathLine.get_point_position(count - 1)
-    var map_prev = %BackgroundMap.local_to_map(prev)
-    var map_coords = %BackgroundMap.local_to_map(pt)
+    var base = pathline.position
+    var count = pathline.get_point_count()
+    var prev = base + pathline.get_point_position(count - 1)
+    var map_prev = background_map.local_to_map(prev)
+    var map_coords = background_map.local_to_map(pt)
 
     var map_diff = map_coords - map_prev
 
@@ -65,28 +97,28 @@ func add_point(pt: Vector2):
         return
 
     if abs(map_diff.x) < abs(map_diff.y):
-        var p = %BackgroundMap.map_to_local(Vector2i(map_prev.x, map_coords.y)) - base
-        %PathLine.add_point(p)
-        %PathLineAhead.position = p
+        var p = background_map.map_to_local(Vector2i(map_prev.x, map_coords.y)) - base
+        pathline.add_point(p)
+        pathline_ahead.position = p
     else:
-        var p = %BackgroundMap.map_to_local(Vector2i(map_coords.x, map_prev.y)) - base
-        %PathLine.add_point(p)
-        %PathLineAhead.position = p
+        var p = background_map.map_to_local(Vector2i(map_coords.x, map_prev.y)) - base
+        pathline.add_point(p)
+        pathline_ahead.position = p
 
 
 func remove_point():
-    var count = %PathLine.get_point_count()
+    var count = pathline.get_point_count()
     if count > 1:
-        %PathLineAhead.position = %PathLine.get_point_position(count - 2)
-        %PathLine.remove_point(count - 1)
+        pathline_ahead.position = pathline.get_point_position(count - 2)
+        pathline.remove_point(count - 1)
     else:
         print("No more points to remove from path")
 
 
 func get_path_coords(tile_map_layer: TileMapLayer):
     var waypoints: Array[Vector2i] = []
-    for i in range(0, %PathLine.get_point_count()):
-        waypoints.append(tile_map_layer.local_to_map(%PathLine.get_point_position(i) + %PathLine.position - tile_map_layer.position))
+    for i in range(0, pathline.get_point_count()):
+        waypoints.append(tile_map_layer.local_to_map(pathline.get_point_position(i) + pathline.position - tile_map_layer.position))
 
     # Waypoints are constrained to differ from each other along exactly one
     # dimension at a time
@@ -135,6 +167,10 @@ func get_tile_path(tile_map_layer: TileMapLayer):
     return tile_data
 
 
+func route():
+    return get_tile_path(background_map)
+
+
 func _on_button_pressed() -> void:
-    for p in get_tile_path(%BackgroundMap):
+    for p in get_tile_path(background_map):
         print([p.biome, p.density])

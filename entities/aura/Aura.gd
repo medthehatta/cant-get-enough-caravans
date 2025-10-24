@@ -8,5 +8,5 @@ class_name Aura
 @export var tags: Array[String] = []
 
 
-func modify(_event: String, _initial: Dictionary):
+func modify(_event: String, _initial: Variant):
     return []

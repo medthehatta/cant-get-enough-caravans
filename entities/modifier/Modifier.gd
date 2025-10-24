@@ -18,5 +18,5 @@ func as_string():
     return ""
 
 
-static func modified(initial: Variant, modifiers: Array[Modifier]):
+static func modified(initial: Variant, modifiers: Array):
     return ([initial] + modifiers).reduce(func(acc, m): return m.apply(acc))
