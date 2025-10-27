@@ -1,0 +1,145 @@
+[gd_scene load_steps=13 format=3 uid="uid://braxo1y2qe6x0"]
+
+[ext_resource type="Script" uid="uid://eruifxwyqi58" path="res://scenes/caravan_editor.gd" id="1_r83rd"]
+[ext_resource type="PackedScene" uid="uid://c20p5ssbao33o" path="res://scenes/inventory_grid.tscn" id="1_sh1sr"]
+[ext_resource type="PackedScene" uid="uid://dmlu0ct0qitvw" path="res://scenes/caravan_evaluator.tscn" id="2_27mi3"]
+[ext_resource type="Gradient" uid="uid://bayxexq7ti8u7" path="res://themes/transparent_gradient.tres" id="2_r83rd"]
+[ext_resource type="Resource" uid="uid://bupfybl1ybpp7" path="res://entities/validator/resources/is_person.tres" id="3_27mi3"]
+[ext_resource type="Resource" uid="uid://dyimig3qer5nd" path="res://entities/validator/resources/is_equipment.tres" id="4_x4gl4"]
+[ext_resource type="Theme" uid="uid://crojpfpmf2ecx" path="res://themes/default.tres" id="5_8u3tf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jmbua"]
+bg_color = Color(0.259294, 0.259294, 0.259294, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a4lx6"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_38mul"]
+gradient = ExtResource("2_r83rd")
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3ftal"]
+gradient = ExtResource("2_r83rd")
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_p6vma"]
+gradient = ExtResource("2_r83rd")
+
+[node name="CaravanEditor" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jmbua")
+script = ExtResource("1_r83rd")
+metadata/_tab_index = 0
+
+[node name="CaravanEvaluator" parent="." instance=ExtResource("2_27mi3")]
+unique_name_in_owner = true
+
+[node name="StatSummary" type="RichTextLabel" parent="."]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 36.0
+grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_a4lx6")
+bbcode_enabled = true
+shortcut_keys_enabled = false
+vertical_alignment = 1
+meta_underlined = false
+hint_underlined = false
+
+[node name="leader" parent="." instance=ExtResource("1_sh1sr")]
+unique_name_in_owner = true
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 13.0
+offset_top = 83.0
+offset_right = 73.0
+offset_bottom = 143.0
+grow_horizontal = 1
+grow_vertical = 1
+mouse_filter = 1
+texture = SubResource("GradientTexture1D_38mul")
+validator = ExtResource("3_27mi3")
+columns_from_square = true
+
+[node name="personnel" parent="." instance=ExtResource("1_sh1sr")]
+unique_name_in_owner = true
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 105.0
+offset_top = 86.0
+offset_right = 165.0
+offset_bottom = 146.0
+grow_horizontal = 1
+grow_vertical = 1
+mouse_filter = 1
+texture = SubResource("GradientTexture1D_3ftal")
+validator = ExtResource("3_27mi3")
+num_columns = 6
+num_slots = 0
+columns_from_square = true
+
+[node name="equipment" parent="." instance=ExtResource("1_sh1sr")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 19.0
+offset_top = 184.0
+offset_right = -19.0
+mouse_filter = 1
+texture = SubResource("GradientTexture1D_p6vma")
+validator = ExtResource("4_x4gl4")
+num_columns = 8
+num_slots = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 46.0
+offset_right = 90.0
+offset_bottom = 77.0
+theme = ExtResource("5_8u3tf")
+bbcode_enabled = true
+text = "[b]Leader[/b]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 103.0
+offset_top = 47.0
+offset_right = 222.0
+offset_bottom = 78.0
+theme = ExtResource("5_8u3tf")
+bbcode_enabled = true
+text = "[b]Personnel[/b]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 150.0
+offset_right = 135.0
+offset_bottom = 181.0
+theme = ExtResource("5_8u3tf")
+bbcode_enabled = true
+text = "[b]Equipment[/b]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[connection signal="meta_hover_ended" from="StatSummary" to="." method="_on_stat_summary_meta_hover_ended"]
+[connection signal="meta_hover_started" from="StatSummary" to="." method="_on_stat_summary_meta_hover_started"]

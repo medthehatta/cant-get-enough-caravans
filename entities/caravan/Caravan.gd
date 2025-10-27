@@ -6,9 +6,9 @@ class_name Caravan
 @export var personnel: Array[Person] = []
 @export var equipment: Array[Equipment] = []
 # TODO: Temporary measures of food and power consumption
-@export var food_calories: int
-@export var equipment_power: int
-@export var weight: int
+@export var food_calories: float
+@export var equipment_power: float
+@export var weight: float
 
 
 var mods = ModifierFactory.new()
@@ -78,7 +78,7 @@ func consume_caravan_resources(consumption):
     # Calculate food calories consumed
     for child in [leader] + personnel:
         var modified_consumption = child.collect("consume_calories", consumption)
-        consumed_calories += modified_consumption
+        consumed_calories += modified_consumption["calories"]
 
     # Consume food calories
     # TODO: This should actually consume inventory items, but we're not modeling that yet
@@ -91,7 +91,7 @@ func consume_caravan_resources(consumption):
     # Calculate power consumed
     for child in equipment:
         var modified_consumption = child.collect("consume_power", consumption)
-        consumed_power += modified_consumption
+        consumed_power += modified_consumption["power"]
 
     # Consume power
     # TODO: This should also reduce the weight if the power is consumed from physical fuel
@@ -103,7 +103,7 @@ func consume_caravan_resources(consumption):
     # Calculate power generated
     for child in equipment:
         var modified_generation = child.collect("generate_power", consumption)
-        generated_power += modified_generation
+        generated_power += modified_generation["power"]
 
     # Generate power
     equipment_power += generated_power

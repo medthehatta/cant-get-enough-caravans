@@ -1,13 +1,13 @@
 extends Actor
 class_name Equipment
 
-@export var weight: int
-@export var cargo_capacity: int
+@export var weight: float
+@export var cargo_capacity: float
 @export var icon: Texture2D
 @export_multiline var flavor: String
-@export var durability: int = 1
-@export var integrity: int = 100
-@export var power_demand: int = 0
+@export var durability: float = 1
+@export var integrity: float = 100
+@export var power_demand: float = 0
 
 
 func base_stats():
@@ -26,3 +26,13 @@ func dynamic_stats():
         "integrity": integrity,
         "auras": auras,
     }
+
+
+func inflict_damage(damage):
+    var diff = (
+        damage.get("kinetic", 0)
+        + damage.get("thermal", 0)
+        + damage.get("electromagnetic", 0)
+        + damage.get("explosive", 0)
+    )
+    integrity = max(0, integrity - diff)

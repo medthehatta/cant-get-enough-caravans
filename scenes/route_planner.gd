@@ -1,19 +1,74 @@
 extends Node2D
+class_name RoutePlanner
 
 
 @onready var background_map = %BackgroundMap
 @onready var cell_highlight = %CellHighlight
-@onready var pathline = %PathLine
-@onready var pathline_ahead = %PathLineAhead
+
+@export var pathline_scene: PackedScene
+
+@export var debug: bool = true
+
 
 var highlighted: Vector2i = Vector2i(0, 0)
 
+var pathlines: Dictionary[int, PathLine]
+var pathline: PathLine
+var editing: bool = false
 
-func _ready():
-    pathline.position = background_map.map_to_local(background_map.local_to_map(pathline.position))
+
+func debug_print(msg):
+    if debug:
+        print(msg)
+
+
+func add_path(starting_pos: Vector2):
+    if pathline:
+        pathline.visible = false
+    var path_id = pathlines.keys().size()
+    var new_path: PathLine = pathline_scene.instantiate()
+    debug_print(new_path)
+    add_child(new_path)
+    debug_print(new_path)
+    pathlines[path_id] = new_path
+    new_path.position = snap_to_map(starting_pos)
+    return path_id
+
+
+func edit_path(path_id: int):
+    if path_id == null:
+        if pathline:
+            pathline.visible = false
+        pathline = null
+
+    elif pathlines.has(path_id):
+        if pathline:
+            pathline.visible = false
+        pathline = pathlines[path_id]
+        pathline.visible = true
+
+    else:
+        print("No pathline named {0}".format([path_id]))
+
+
+func remove_path(path_id: int):
+    if pathlines.has(path_id):
+        pathlines[path_id].queue_free()
+        pathlines.erase(path_id)
+        cell_highlight.erase_cell(highlighted)
+    else:
+        print("Cannot delete pathline {0}, does not exist".format([path_id]))
 
 
 func _input(event):
+    if not pathline:
+        return
+
+    if not editing:
+        propose_point(last_point(pathline))
+        cell_highlight.erase_cell(highlighted)
+        return
+
     if event is InputEventMouseButton:
         var pos = event.position - position
         var tile_rect = background_map.get_used_rect()
@@ -39,19 +94,23 @@ func _input(event):
             background_map.map_to_local(tile_rect.position),
             tile_rect.size * background_map.tile_set.tile_size,
         )
-        var global_rect = Rect2(
+        var global_map_rect = Rect2(
             background_map.to_global(pixel_rect.position),
             pixel_rect.size
         )
-        if not global_rect.has_point(to_global(pos)):
-            var count = pathline.get_point_count()
-            propose_point(pathline.position + pathline.get_point_position(count - 1))
+        if not global_map_rect.has_point(to_global(pos)):
+            propose_point(last_point(pathline))
         else:
             propose_point(pos)
 
 
 func snap_to_map(pt: Vector2):
     return background_map.map_to_local(background_map.local_to_map(pt))
+
+
+func last_point(pl: Line2D):
+    var count = pl.get_point_count()
+    return pl.position + pl.get_point_position(count - 1)
 
 
 func highlight_cell_tile(coords: Vector2i):
@@ -74,12 +133,12 @@ func propose_point(pt: Vector2):
         return
 
     if abs(map_diff.x) < abs(map_diff.y):
-        var p = background_map.map_to_local(Vector2i(map_prev.x, map_coords.y)) - pathline_ahead.position - base
-        pathline_ahead.set_point_position(1, p)
+        var p = background_map.map_to_local(Vector2i(map_prev.x, map_coords.y)) - pathline.ahead.position - base
+        pathline.ahead.set_point_position(1, p)
         highlight_cell_tile(Vector2i(map_prev.x, map_coords.y))
     else:
-        var p = background_map.map_to_local(Vector2i(map_coords.x, map_prev.y)) - pathline_ahead.position - base
-        pathline_ahead.set_point_position(1, p)
+        var p = background_map.map_to_local(Vector2i(map_coords.x, map_prev.y)) - pathline.ahead.position - base
+        pathline.ahead.set_point_position(1, p)
         highlight_cell_tile(Vector2i(map_coords.x, map_prev.y))
 
 
@@ -99,26 +158,26 @@ func add_point(pt: Vector2):
     if abs(map_diff.x) < abs(map_diff.y):
         var p = background_map.map_to_local(Vector2i(map_prev.x, map_coords.y)) - base
         pathline.add_point(p)
-        pathline_ahead.position = p
+        pathline.ahead.position = p
     else:
         var p = background_map.map_to_local(Vector2i(map_coords.x, map_prev.y)) - base
         pathline.add_point(p)
-        pathline_ahead.position = p
+        pathline.ahead.position = p
 
 
 func remove_point():
     var count = pathline.get_point_count()
     if count > 1:
-        pathline_ahead.position = pathline.get_point_position(count - 2)
+        pathline.ahead.position = pathline.get_point_position(count - 2)
         pathline.remove_point(count - 1)
     else:
         print("No more points to remove from path")
 
 
-func get_path_coords(tile_map_layer: TileMapLayer):
+func get_path_coords(tile_map_layer: TileMapLayer, pl: PathLine):
     var waypoints: Array[Vector2i] = []
-    for i in range(0, pathline.get_point_count()):
-        waypoints.append(tile_map_layer.local_to_map(pathline.get_point_position(i) + pathline.position - tile_map_layer.position))
+    for i in range(0, pl.get_point_count()):
+        waypoints.append(tile_map_layer.local_to_map(pl.get_point_position(i) + pl.position - tile_map_layer.position))
 
     # Waypoints are constrained to differ from each other along exactly one
     # dimension at a time
@@ -147,8 +206,8 @@ func get_path_coords(tile_map_layer: TileMapLayer):
     return coords
 
 
-func get_tile_path(tile_map_layer: TileMapLayer):
-    var points = get_path_coords(tile_map_layer)
+func get_tile_path(tile_map_layer: TileMapLayer, pl: PathLine):
+    var points = get_path_coords(tile_map_layer, pl)
     var tile_data: Array[MapTile] = []
 
     for pt in points:
@@ -167,10 +226,8 @@ func get_tile_path(tile_map_layer: TileMapLayer):
     return tile_data
 
 
-func route():
-    return get_tile_path(background_map)
-
-
-func _on_button_pressed() -> void:
-    for p in get_tile_path(background_map):
-        print([p.biome, p.density])
+func route(path_id: int):
+    if pathlines.has(path_id):
+        return get_tile_path(background_map, pathlines[path_id])
+    else:
+        return null

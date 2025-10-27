@@ -51,7 +51,7 @@ func traverse(delta: float) -> bool:
 
     var initial_speed = {"speed": 1}
     var modified_speed = caravan.collect("traverse_speed", initial_speed)
-    remaining_tile_progress -= int(modified_speed["speed"] * delta)
+    remaining_tile_progress -= modified_speed["speed"] * delta
 
     # Inflict integrity damage
     var base_damage = _base_damage_for(tile)
@@ -69,7 +69,12 @@ func traverse(delta: float) -> bool:
     caravan.contribute_xp_to_caravan(modified_xp)
 
     # Consume resources
-    var base_consumption = {"biome": tile.biome, "speed": modified_speed}
+    var base_consumption = {
+        "biome": tile.biome,
+        "speed": modified_speed,
+        "calories": 0,
+        "power": 0,
+    }
     var modified_consumption = caravan.collect("consume_caravan_resources", base_consumption)
     caravan.consume_caravan_resources(modified_consumption)
 

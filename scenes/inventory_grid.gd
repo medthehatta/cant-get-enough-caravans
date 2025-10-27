@@ -12,7 +12,7 @@ signal resource_unhovered(item: InventoryGridItem, resource: Resource)
 @export var num_columns: int = 1
 @export var num_slots: int = 1
 @export var columns_from_square: bool = false
-@export var debug: bool = false
+@export var debug: bool = true
 
 
 func _ready():
@@ -41,6 +41,7 @@ func _insert_new_slot():
 
 
 func set_num_slots(n: int):
+    debug_print("setting slots")
     var existing_num_slots = grid.get_children().size()
 
     # Slots are already equal, do nothing
