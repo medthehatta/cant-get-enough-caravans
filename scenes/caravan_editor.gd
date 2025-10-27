@@ -23,11 +23,16 @@ func connect_cursor_inventory(cursor_inventory: CursorInventory):
 
 func disconnect_cursor_inventory(cursor_inventory: CursorInventory):
     print("Disconnecting cursor inventory from {0}".format([name]))
-    cursor_inventory.picked.disconnect(_on_cursor_picked)
-    cursor_inventory.placed.disconnect(_on_cursor_placed)
-    leader_grid.resource_clicked.disconnect(cursor_inventory.on_grid_item_clicked)
-    personnel_grid.resource_clicked.disconnect(cursor_inventory.on_grid_item_clicked)
-    equipment_grid.resource_clicked.disconnect(cursor_inventory.on_grid_item_clicked)
+    maybe_disconnect(cursor_inventory.picked, _on_cursor_picked)
+    maybe_disconnect(cursor_inventory.placed, _on_cursor_placed)
+    maybe_disconnect(leader_grid.resource_clicked, cursor_inventory.on_grid_item_clicked)
+    maybe_disconnect(personnel_grid.resource_clicked, cursor_inventory.on_grid_item_clicked)
+    maybe_disconnect(equipment_grid.resource_clicked, cursor_inventory.on_grid_item_clicked)
+
+
+func maybe_disconnect(sig, callback):
+    if sig.is_connected(callback):
+        sig.disconnect(callback)
 
 
 func _ready():

@@ -93,6 +93,10 @@ func _on_remove_caravan_button_pressed() -> void:
 
 
 func _on_edit_route_button_pressed() -> void:
+    if editors.get_child_count() == 0:
+        print("Nothing to edit")
+        return
+
     if route_planner.editing:
         route_planner.editing = false
         %EditRouteButton.text = "Edit Route"

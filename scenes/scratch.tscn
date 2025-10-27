@@ -48,7 +48,7 @@ simple_text_input_modal = ExtResource("23_66q2l")
 
 [node name="RoutePlanner" parent="." instance=ExtResource("22_3vby6")]
 unique_name_in_owner = true
-position = Vector2(441, 46)
+position = Vector2(444, 110)
 
 [node name="PropertyIcons" parent="." instance=ExtResource("9_cirwj")]
 unique_name_in_owner = true
