@@ -16,16 +16,27 @@ var pathlines: Dictionary[int, PathLine]
 var pathline: PathLine
 var editing: bool = false
 
+var generated_ids: Array = []
+
 
 func debug_print(msg):
     if debug:
         print(msg)
 
 
+func get_unique_id():
+    var rng = RandomNumberGenerator.new()
+    var path_id = rng.randi()
+    while generated_ids.has(path_id):
+        path_id = rng.randi()
+    generated_ids.append(path_id)
+    return path_id
+
+
 func add_path(starting_pos: Vector2):
     if pathline:
         pathline.visible = false
-    var path_id = pathlines.keys().size()
+    var path_id = get_unique_id()
     var new_path: PathLine = pathline_scene.instantiate()
     debug_print(new_path)
     add_child(new_path)
@@ -35,7 +46,7 @@ func add_path(starting_pos: Vector2):
     return path_id
 
 
-func edit_path(path_id: int):
+func edit_path(path_id):
     if path_id == null:
         if pathline:
             pathline.visible = false
@@ -51,7 +62,7 @@ func edit_path(path_id: int):
         print("No pathline named {0}".format([path_id]))
 
 
-func remove_path(path_id: int):
+func remove_path(path_id):
     if pathlines.has(path_id):
         pathlines[path_id].queue_free()
         pathlines.erase(path_id)
@@ -226,7 +237,7 @@ func get_tile_path(tile_map_layer: TileMapLayer, pl: PathLine):
     return tile_data
 
 
-func route(path_id: int):
+func route(path_id):
     if pathlines.has(path_id):
         return get_tile_path(background_map, pathlines[path_id])
     else:

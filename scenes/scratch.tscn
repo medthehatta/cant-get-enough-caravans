@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://cp6q0kwkmd886"]
+[gd_scene load_steps=30 format=3 uid="uid://cp6q0kwkmd886"]
 
 [ext_resource type="Script" uid="uid://bfnrjl1k57lvh" path="res://scenes/scratch.gd" id="1_mbcf5"]
 [ext_resource type="PackedScene" uid="uid://c20p5ssbao33o" path="res://scenes/inventory_grid.tscn" id="1_ufdn1"]
@@ -29,9 +29,6 @@
 [ext_resource type="PackedScene" uid="uid://cns5gj0nnlevl" path="res://scenes/simple_text_input_modal.tscn" id="23_66q2l"]
 [ext_resource type="PackedScene" uid="uid://braxo1y2qe6x0" path="res://scenes/caravan_editor.tscn" id="28_66q2l"]
 [ext_resource type="StyleBox" uid="uid://cuviy1uemkit0" path="res://themes/panel_bg.tres" id="29_sv35f"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvahf"]
-bg_color = Color(0.169245, 0.169245, 0.169245, 1)
 
 [node name="Scratch" type="Control" node_paths=PackedStringArray("property_icons")]
 layout_mode = 3
@@ -77,15 +74,6 @@ mouse_filter = 1
 num_columns = 10
 num_slots = 20
 
-[node name="CheckRouteButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 416.0
-offset_top = 577.0
-offset_right = 603.0
-offset_bottom = 634.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_vvahf")
-text = "Check route"
-
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
 offset_left = -1.0
@@ -117,6 +105,10 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Edit Route"
 
+[node name="CheckRouteButton" type="Button" parent="Panel/HBoxContainer"]
+layout_mode = 2
+text = "Check Route"
+
 [node name="Editors" type="TabContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 0
@@ -144,9 +136,9 @@ layout_mode = 0
 property_icons = NodePath("../PropertyIcons")
 
 [connection signal="resource_clicked" from="inventory" to="cursor" method="on_grid_item_clicked"]
-[connection signal="pressed" from="CheckRouteButton" to="." method="_on_check_route_button_pressed"]
 [connection signal="pressed" from="Panel/HBoxContainer/NewCaravanButton" to="." method="_on_new_caravan_button_pressed"]
 [connection signal="pressed" from="Panel/HBoxContainer/RemoveCaravanButton" to="." method="_on_remove_caravan_button_pressed"]
 [connection signal="pressed" from="Panel/HBoxContainer/EditRouteButton" to="." method="_on_edit_route_button_pressed"]
+[connection signal="pressed" from="Panel/HBoxContainer/CheckRouteButton" to="." method="_on_check_route_button_pressed"]
 [connection signal="tab_selected" from="Editors" to="." method="_on_editors_tab_selected"]
 [connection signal="pressed" from="BigNewCaravanButton" to="." method="_on_new_caravan_button_pressed"]

@@ -6,23 +6,29 @@ class_name CaravanEditor
 @onready var equipment_grid: InventoryGrid = %equipment
 @onready var caravan_evaluator: CaravanEvaluator = %CaravanEvaluator
 
+@export var debug: bool = false
 @export var property_icons: PropertyIcons
 
 # FIXME: Hack to just pass the tooltip like this
 @export var tooltip: Control
 
 
+func debug_print(msg):
+    if debug:
+        print(msg)
+
+
 func connect_cursor_inventory(cursor_inventory: CursorInventory):
-    print("Connecting cursor inventory to {0}".format([name]))
-    cursor_inventory.picked.connect(_on_cursor_picked)
-    cursor_inventory.placed.connect(_on_cursor_placed)
-    leader_grid.resource_clicked.connect(cursor_inventory.on_grid_item_clicked)
-    personnel_grid.resource_clicked.connect(cursor_inventory.on_grid_item_clicked)
-    equipment_grid.resource_clicked.connect(cursor_inventory.on_grid_item_clicked)
+    debug_print("Connecting cursor inventory to {0}".format([name]))
+    maybe_connect(cursor_inventory.picked, _on_cursor_picked)
+    maybe_connect(cursor_inventory.placed, _on_cursor_placed)
+    maybe_connect(leader_grid.resource_clicked, cursor_inventory.on_grid_item_clicked)
+    maybe_connect(personnel_grid.resource_clicked, cursor_inventory.on_grid_item_clicked)
+    maybe_connect(equipment_grid.resource_clicked, cursor_inventory.on_grid_item_clicked)
 
 
 func disconnect_cursor_inventory(cursor_inventory: CursorInventory):
-    print("Disconnecting cursor inventory from {0}".format([name]))
+    debug_print("Disconnecting cursor inventory from {0}".format([name]))
     maybe_disconnect(cursor_inventory.picked, _on_cursor_picked)
     maybe_disconnect(cursor_inventory.placed, _on_cursor_placed)
     maybe_disconnect(leader_grid.resource_clicked, cursor_inventory.on_grid_item_clicked)
@@ -33,6 +39,11 @@ func disconnect_cursor_inventory(cursor_inventory: CursorInventory):
 func maybe_disconnect(sig, callback):
     if sig.is_connected(callback):
         sig.disconnect(callback)
+
+
+func maybe_connect(sig, callback):
+    if not sig.is_connected(callback):
+        sig.connect(callback)
 
 
 func _ready():

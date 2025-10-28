@@ -12,8 +12,9 @@ var result: String
 var output: String
 
 
-func prompt_and_wait(p: String):
+func prompt_and_wait(p: String, default: String = ""):
     label.text = p
+    input.text = default
     visible = true
     input.grab_focus()
 

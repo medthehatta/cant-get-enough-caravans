@@ -10,6 +10,9 @@ extends Control
 @export var editor_scn: PackedScene
 @export var simple_text_input_modal: PackedScene
 
+var editor_to_route_idx: Dictionary = {}
+var incrementing: int = 0
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -40,60 +43,117 @@ func _on_stat_summary_meta_hover_ended(_meta: Variant) -> void:
     %Tooltip.clear_text()
 
 
+func current_caravan_id():
+    if editors.get_child_count() >= 0:
+        return editors.current_tab
+    else:
+        return null
+
+
+func current_caravan_editor():
+    var id_ = current_caravan_id()
+    if id_ != null:
+        return editors.get_child(id_)
+    else:
+        return null
+
+
+func current_route_id():
+    var editor = current_caravan_editor()
+    if editor:
+        return editor_to_route_idx.get(editor)
+    else:
+        return null
+
+
+func current_route():
+    var id_ = current_route_id()
+    if id_ != null:
+        return route_planner.route(id_)
+    else:
+        return null
+
+
 func _on_editors_tab_selected(tab: int) -> void:
     if not editors:
         return
 
-    if editors.current_tab >= 0:
-        editors.get_child(editors.current_tab).disconnect_cursor_inventory(cursor_inventory)
+    var current_editor_id = current_caravan_id()
 
-    var active_editor = editors.get_child(tab)
-    active_editor.connect_cursor_inventory(cursor_inventory)
-    route_planner.edit_path(tab)
+    var current_editor = current_caravan_editor()
+    if current_editor:
+        current_editor.disconnect_cursor_inventory(cursor_inventory)
+
+    var new_active_editor = editors.get_child(tab)
+    new_active_editor.connect_cursor_inventory(cursor_inventory)
+
+    var route_idx = editor_to_route_idx.get(new_active_editor)
+    if route_idx:
+        route_planner.edit_path(route_idx)
+
+    print("current_id={0} new_id={1} route_id={2}".format([current_editor_id, tab, route_idx]))
 
 
 func _on_check_route_button_pressed() -> void:
-    for tile in route_planner.route(editors.current_tab):
+    var route = current_route()
+    if route == null:
+        route = []
+
+    for tile in current_route():
         print("{0} {1}".format([tile.biome, tile.density]))
 
 
 func _on_new_caravan_button_pressed() -> void:
-    print("pressed")
-    var caravan_name = await single_text_prompt_modal("Caravan name")
+    var next_tab = editors.get_child_count()
+
+    var default_name = "Caravan {0}".format([incrementing])
+    var caravan_name = await single_text_prompt_modal("Caravan name", default_name)
     if not caravan_name:
         return
 
+    incrementing += 1
+
     var new_editor: CaravanEditor = editor_scn.instantiate()
-    var next_tab = editors.get_child_count()
     new_editor.property_icons = %PropertyIcons
     new_editor.tooltip = %Tooltip
     editors.add_child(new_editor)
-    route_planner.add_path(Vector2(60, 60))
-    editors.current_tab = next_tab
     editors.set_tab_title(next_tab, caravan_name)
+
+    var route_idx = route_planner.add_path(Vector2(60, 60))
+
+    editor_to_route_idx[new_editor] = route_idx
+
+    editors.current_tab = next_tab
     if editors.get_child_count() > 0:
         %BigNewCaravanButton.visible = false
 
 
-func single_text_prompt_modal(prompt: String):
+func single_text_prompt_modal(prompt: String, default: String = ""):
     print("starting modal")
     var modal: SimpleTextInputModal = simple_text_input_modal.instantiate()
     %SmallModalSpawnPos.add_child(modal)
-    return await modal.prompt_and_wait(prompt)
+    return await modal.prompt_and_wait(prompt, default)
 
 
 func _on_remove_caravan_button_pressed() -> void:
-    var current_num = editors.current_tab
-    route_planner.remove_path(current_num)
-    editors.get_child(editors.current_tab).queue_free()
-    if current_num == 0:
-        %BigNewCaravanButton.visible = true
-    else:
-        editors.current_tab = current_num - 1
+    # FIXME: When we remove editors, we reuse tab ids, but the routes are not
+    # cleared, so we get weird shared routes
+    var current_editor = current_caravan_editor()
+    var current_route_id_ = current_route_id()
+
+    if current_editor:
+        current_editor.queue_free()
+        editors.select_previous_available()
+        if editors.get_child_count() <= 0:
+            %BigNewCaravanButton.visible = true
+        editor_to_route_idx.erase(current_editor)
+
+    if current_route_id_ != null:
+        route_planner.remove_path(current_route_id_)
 
 
 func _on_edit_route_button_pressed() -> void:
-    if editors.get_child_count() == 0:
+    if current_caravan_id() == null:
         print("Nothing to edit")
         return
 
