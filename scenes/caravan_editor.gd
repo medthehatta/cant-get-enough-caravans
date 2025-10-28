@@ -131,3 +131,7 @@ func _on_stat_summary_meta_hover_started(meta: Variant) -> void:
 
 func _on_stat_summary_meta_hover_ended(_meta: Variant) -> void:
     tooltip.clear_text()
+
+
+func caravan():
+    return caravan_evaluator.emit_caravan()
