@@ -10,6 +10,8 @@ var remaining_tile_progress = null
 
 var tile_index = 0
 
+var events = EventFactory.new()
+
 
 func _base_damage_for(tile):
     if tile.biome == "volcanic":
