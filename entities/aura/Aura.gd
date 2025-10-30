@@ -8,5 +8,5 @@ class_name Aura
 @export var tags: Array[String] = []
 
 
-func modify(_event: String, _initial: Variant):
+func collect2(_event: Event):
     return []

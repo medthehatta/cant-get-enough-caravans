@@ -7,15 +7,14 @@ class_name EquipmentDamageEvent
 @export var explosive: float = 0
 
 
-static func create(
-    kinetic_: float = 0,
-    thermal_: float = 0,
-    electromagnetic_: float = 0,
-    explosive_: float = 0,
-):
+static func create(dmg: Dictionary):
+    check_dictionary(
+        ["kinetic", "thermal", "electromagnetic", "explosive"],
+        dmg,
+    )
     var event = EquipmentDamageEvent.new()
-    event.kinetic = kinetic_
-    event.thermal = thermal_
-    event.electromagnetic = electromagnetic_
-    event.explosive = explosive_
+    event.kinetic = dmg.get("kinetic", 0)
+    event.thermal = dmg.get("thermal", 0)
+    event.electromagnetic = dmg.get("electromagnetic", 0)
+    event.explosive = dmg.get("explosive", 0)
     return event

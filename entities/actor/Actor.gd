@@ -6,16 +6,16 @@ class_name Actor
 @export var auras: Array[Aura] = []
 
 
-func modify(event: String, initial: Variant):
+func collect(event: Event):
     var mods = []
     for aura in auras:
-        var mod = aura.modify(event, initial)
+        var mod = aura.collect2(event)
         mods.append_array(mod)
     return mods
 
 
-func collect(event: String, initial: Variant):
-    var modifiers = modify(event, initial)
+func modify(event: Event):
+    var modifiers = collect(event)
     # TODO: Ordering
-    var modified = Modifier.modified(initial, modifiers)
+    var modified = Modifier.modified(event, modifiers)
     return modified

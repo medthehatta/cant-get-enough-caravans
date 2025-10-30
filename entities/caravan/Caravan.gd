@@ -30,54 +30,55 @@ func dynamic_stats():
     }
 
 
-func _modify(_event: String, _initial: Variant):
+func _collect(_event: Event):
     return []
 
 
 # Override because we need to talk to our children
-func modify(event: String, initial: Variant):
+func collect(event: Event):
     var responses = []
 
-    responses.append_array(leader.modify(event, initial))
+    responses.append_array(leader.collect(event))
 
     for person in personnel:
-        responses.append_array(person.modify(event, initial))
+        responses.append_array(person.collect(event))
 
     for device in equipment:
-        responses.append_array(device.modify(event, initial))
+        responses.append_array(device.collect(event))
 
     # Do self last
-    responses.append_array(_modify(event, initial))
+    responses.append_array(_collect(event))
 
     return responses
 
 
 func inflict_damage_to_caravan(damage):
     for child in equipment:
-        var modified_damage = child.collect("inflict_damage", damage)
+        var modified_damage = child.modify(damage)
         child.inflict_damage(modified_damage)
 
 
 func inflict_stress_to_caravan(stress):
     for child in [leader] + personnel:
-        var modified_stress = child.collect("inflict_stress", stress)
+        var modified_stress = child.modify(stress)
         child.inflict_stress(modified_stress)
 
 
 func contribute_xp_to_caravan(xp):
     for child in [leader] + personnel:
-        var modified_xp = child.collect("contribute_xp", xp)
+        var modified_xp = child.modify(xp)
         child.contribute_xp(modified_xp)
 
 
 func consume_caravan_resources(consumption):
+    # FIXME: Each collect might actually need to be a derived event
     var consumed_calories = 0
     var consumed_power = 0
     var generated_power = 0
 
     # Calculate food calories consumed
     for child in [leader] + personnel:
-        var modified_consumption = child.collect("consume_calories", consumption)
+        var modified_consumption = child.modify(consumption)
         consumed_calories += modified_consumption["calories"]
 
     # Consume food calories
@@ -90,7 +91,7 @@ func consume_caravan_resources(consumption):
 
     # Calculate power consumed
     for child in equipment:
-        var modified_consumption = child.collect("consume_power", consumption)
+        var modified_consumption = child.modify(consumption)
         consumed_power += modified_consumption["power"]
 
     # Consume power
@@ -102,7 +103,7 @@ func consume_caravan_resources(consumption):
 
     # Calculate power generated
     for child in equipment:
-        var modified_generation = child.collect("generate_power", consumption)
+        var modified_generation = child.modify(consumption)
         generated_power += modified_generation["power"]
 
     # Generate power
