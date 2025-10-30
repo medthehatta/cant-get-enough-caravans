@@ -4,14 +4,23 @@ extends Control
 @onready var inventory_grid: InventoryGrid = %inventory
 @onready var editors: TabContainer = %Editors
 @onready var route_planner: RoutePlanner = %RoutePlanner
+@onready var last_timer_time = Time.get_ticks_msec()
 
 @export var property_icons: PropertyIcons
 @export var example_resources: Array[Resource]
 @export var editor_scn: PackedScene
 @export var simple_text_input_modal: PackedScene
+@export var debug: bool = false
 
 var editor_to_route_idx: Dictionary = {}
 var incrementing: int = 0
+var running: bool = false
+var expeditions: Array[Expedition] = []
+
+
+func debug_print(msg):
+    if debug:
+        print(msg)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -91,7 +100,7 @@ func _on_editors_tab_selected(tab: int) -> void:
     if route_idx:
         route_planner.edit_path(route_idx)
 
-    print("current_id={0} new_id={1} route_id={2}".format([current_editor_id, tab, route_idx]))
+    debug_print("current_id={0} new_id={1} route_id={2}".format([current_editor_id, tab, route_idx]))
 
 
 func _on_check_route_button_pressed() -> void:
@@ -163,3 +172,47 @@ func _on_edit_route_button_pressed() -> void:
     else:
         route_planner.editing = true
         %EditRouteButton.text = "Stop Editing Route"
+
+
+func _on_toggle_run_toggled(toggled_on: bool) -> void:
+    if toggled_on:
+        route_planner.lock_all()
+        for editor in editor_to_route_idx.keys():
+            var route_id = editor_to_route_idx[editor]
+            var route = route_planner.route(route_id)
+            var expedition = Expedition.new()
+            expedition.caravan = editor.caravan()
+            expedition.route = route
+            expeditions.append(expedition)
+        running = true
+        %ToggleRunButton.text = "Stop Run"
+    else:
+        running = false
+        %ToggleRunButton.text = "Start Run"
+
+
+func _on_timer_timeout() -> void:
+    var current = Time.get_ticks_msec()
+    var delta = float(current - last_timer_time)
+    last_timer_time = current
+
+    var to_drop = []
+
+    if running:
+        if expeditions.size() == 0:
+            print("All expeditions done")
+            running = false
+            %ToggleRunButton.text = "Start Run"
+
+        for expedition in expeditions:
+            print("\n\n")
+            print(expedition)
+            var continuing = expedition.traverse(delta / 1000)
+            if not continuing:
+                route_planner.unlock_path(expedition.route)
+                to_drop.append(expedition)
+                print("Expedition {0} is done".format([expedition]))
+            print(expedition.caravan.summary())
+
+        for drop in to_drop:
+            expeditions.erase(drop)

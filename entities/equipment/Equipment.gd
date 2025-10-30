@@ -30,9 +30,9 @@ func dynamic_stats():
 
 func inflict_damage(damage):
     var diff = (
-        damage.get("kinetic", 0)
-        + damage.get("thermal", 0)
-        + damage.get("electromagnetic", 0)
-        + damage.get("explosive", 0)
+        damage.kinetic
+        + damage.thermal
+        + damage.electromagnetic
+        + damage.explosive
     )
     integrity = max(0, integrity - diff)

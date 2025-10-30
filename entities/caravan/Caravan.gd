@@ -71,6 +71,9 @@ func contribute_xp_to_caravan(xp):
 
 
 func consume_caravan_resources(consumption):
+    # DEBUG: FIXME: skip for now
+    return
+
     # FIXME: Each collect might actually need to be a derived event
     var consumed_calories = 0
     var consumed_power = 0
@@ -108,3 +111,29 @@ func consume_caravan_resources(consumption):
 
     # Generate power
     equipment_power += generated_power
+
+
+func receive_loot(loot):
+    pass
+
+
+func summary():
+    var responses = []
+
+    responses.append(leader.dynamic_stats())
+
+    for person in personnel:
+        responses.append(person.dynamic_stats())
+
+    for device in equipment:
+        responses.append(device.dynamic_stats())
+
+    # Do self last
+    responses.append(dynamic_stats())
+
+    var printable_entries = []
+
+    for resp in responses:
+        printable_entries.append(str(resp))
+
+    return "\n".join(printable_entries)

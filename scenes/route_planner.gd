@@ -15,6 +15,7 @@ var highlighted: Vector2i = Vector2i(0, 0)
 var pathlines: Dictionary[int, PathLine]
 var pathline: PathLine
 var editing: bool = false
+var locked: Array[PathLine] = []
 
 var generated_ids: Array = []
 
@@ -31,6 +32,42 @@ func get_unique_id():
         path_id = rng.randi()
     generated_ids.append(path_id)
     return path_id
+
+
+func is_locked_path(path):
+    return locked.has(path)
+
+
+func is_locked(path_id):
+    var path = pathlines.get(path_id)
+    return is_locked_path(path)
+
+
+func lock(path_id):
+    var path = pathlines.get(path_id)
+    if not locked.has(path):
+        locked.append(path)
+
+
+func unlock(path_id):
+    var path = pathlines.get(path_id)
+    if locked.has(path):
+        locked.erase(path)
+
+
+func unlock_path(path):
+    if locked.has(path):
+        locked.erase(path)
+
+
+func lock_all():
+    for path_id in pathlines.keys():
+        lock(path_id)
+
+
+func unlock_all():
+    for path_id in pathlines.keys():
+        unlock(path_id)
 
 
 func add_path(starting_pos: Vector2):
@@ -64,6 +101,8 @@ func edit_path(path_id):
 
 func remove_path(path_id):
     if pathlines.has(path_id):
+        if locked.has(pathlines[path_id]):
+            unlock(path_id)
         pathlines[path_id].queue_free()
         pathlines.erase(path_id)
         cell_highlight.erase_cell(highlighted)
@@ -76,6 +115,11 @@ func _input(event):
         return
 
     if not editing:
+        propose_point(last_point(pathline))
+        cell_highlight.erase_cell(highlighted)
+        return
+
+    if is_locked_path(pathline):
         propose_point(last_point(pathline))
         cell_highlight.erase_cell(highlighted)
         return

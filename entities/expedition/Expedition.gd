@@ -29,7 +29,7 @@ func _base_xp_for(tile):
     return events.caravan_xp_gain.create()
 
 
-func _base_consumption_for(tile):
+func _base_consumption_for(_tile):
     var base_consumption = {
         "calories": 0,
         "power": 0,
@@ -57,7 +57,7 @@ func traverse(delta: float) -> bool:
         remaining_tile_progress = null
 
         # FIXME: should this be route.size() - 1?
-        if tile_index < route.size():
+        if tile_index < route.size() - 1:
             tile_index += 1
         else:
             tile_index = 0
