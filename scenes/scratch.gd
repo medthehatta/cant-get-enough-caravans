@@ -5,14 +5,17 @@ extends Control
 @onready var editors: TabContainer = %Editors
 @onready var route_planner: RoutePlanner = %RoutePlanner
 @onready var last_timer_time = Time.get_ticks_msec()
+@onready var caravans = %Caravans
 
 @export var property_icons: PropertyIcons
 @export var example_resources: Array[Resource]
 @export var editor_scn: PackedScene
 @export var simple_text_input_modal: PackedScene
 @export var debug: bool = false
+@export var caravan_scn: PackedScene
 
 var editor_to_route_idx: Dictionary = {}
+var editor_to_caravan: Dictionary = {}
 var incrementing: int = 0
 var running: bool = false
 var expeditions: Array[Expedition] = []
@@ -116,6 +119,14 @@ func current_route():
         return null
 
 
+func current_caravan_scn():
+    var editor = current_caravan_editor()
+    if editor:
+        return editor_to_caravan.get(editor)
+    else:
+        return null
+
+
 func _on_editors_tab_selected(tab: int) -> void:
     if not editors:
         return
@@ -155,13 +166,27 @@ func _on_new_caravan_button_pressed() -> void:
 
     incrementing += 1
 
+    var new_caravan = caravan_scn.instantiate()
+    var rng = RandomNumberGenerator.new()
+    new_caravan.color = Color.from_hsv(
+        float(rng.randi_range(0, 20)) / 21,
+        1,
+        float(rng.randi_range(1, 2)) / 2,
+    )
+    caravans.add_child(new_caravan)
+    new_caravan.position = route_planner.snap_to_map(%Player.position - route_planner.position)
+
     var new_editor: CaravanEditor = editor_scn.instantiate()
     new_editor.property_icons = %PropertyIcons
     new_editor.tooltip = %Tooltip
     editors.add_child(new_editor)
+    new_editor.icon.texture = new_caravan.icon.texture
+    new_editor.icon.material = new_caravan.icon.material
     editors.set_tab_title(next_tab, caravan_name)
 
-    var route_idx = route_planner.add_path(%Player.position - route_planner.position)
+    editor_to_caravan[new_editor] = new_caravan
+
+    var route_idx = route_planner.add_path(new_caravan.position)
 
     editor_to_route_idx[new_editor] = route_idx
 
@@ -171,7 +196,6 @@ func _on_new_caravan_button_pressed() -> void:
 
 
 func single_text_prompt_modal(prompt: String, default: String = ""):
-    print("starting modal")
     var modal: SimpleTextInputModal = simple_text_input_modal.instantiate()
     add_child(modal)
     return await modal.prompt_and_wait(prompt, default)
@@ -180,16 +204,21 @@ func single_text_prompt_modal(prompt: String, default: String = ""):
 func _on_remove_caravan_button_pressed() -> void:
     var current_editor = current_caravan_editor()
     var current_route_id_ = current_route_id()
+    var current_caravan_scn_ = current_caravan_scn()
 
-    if current_editor:
-        current_editor.queue_free()
-        editors.select_previous_available() or editors.select_next_available()
-        editor_to_route_idx.erase(current_editor)
-        if editor_to_route_idx.size() == 0:
-            editors.visible = false
+    if current_caravan_scn_:
+        current_caravan_scn_.queue_free()
+        editor_to_caravan.erase(current_editor)
 
     if current_route_id_ != null:
         route_planner.remove_path(current_route_id_)
+
+    if current_editor:
+        current_editor.queue_free()
+        editor_to_route_idx.erase(current_editor)
+        editors.select_previous_available() or editors.select_next_available()
+        if editor_to_route_idx.size() == 0:
+            editors.visible = false
 
 
 func _on_edit_route_button_pressed() -> void:

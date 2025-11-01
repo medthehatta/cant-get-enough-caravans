@@ -5,6 +5,7 @@ class_name CaravanEditor
 @onready var personnel_grid: InventoryGrid = %personnel
 @onready var equipment_grid: InventoryGrid = %equipment
 @onready var caravan_evaluator: CaravanEvaluator = %CaravanEvaluator
+@onready var icon = %Icon
 
 @export var debug: bool = false
 @export var property_icons: PropertyIcons

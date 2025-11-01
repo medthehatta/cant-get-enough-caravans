@@ -1,18 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://d1boh1uanohf7"]
+[gd_scene load_steps=2 format=3 uid="uid://d1boh1uanohf7"]
 
 [ext_resource type="Script" uid="uid://bvnyoru01cu5c" path="res://scenes/path_line.gd" id="1_2v3x0"]
-[ext_resource type="Shader" uid="uid://63vhs3i75nit" path="res://shaders/color_replace.gdshader" id="1_of8y1"]
-[ext_resource type="Texture2D" uid="uid://cq25kosb4jpp" path="res://assets/icons/car-wheel.svg" id="2_2v3x0"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_s4r7a"]
-shader = ExtResource("1_of8y1")
-shader_parameter/og_color = Color(0, 0, 0, 1)
-shader_parameter/new_color = Color(1, 0.736, 0.28, 0.678431)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_het3g"]
-shader = ExtResource("1_of8y1")
-shader_parameter/og_color = Color(0, 0, 0, 1)
-shader_parameter/new_color = Color(0.811994, 0.12895, 0.345256, 1)
 
 [node name="PathLine" type="Line2D"]
 points = PackedVector2Array(0, 0)
@@ -25,37 +13,3 @@ unique_name_in_owner = true
 points = PackedVector2Array(0, 0, 0, 0)
 default_color = Color(0.28, 0.4, 1, 0.678431)
 round_precision = 1
-
-[node name="TentativeMark" type="TextureRect" parent="PathLineAhead"]
-unique_name_in_owner = true
-material = SubResource("ShaderMaterial_s4r7a")
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_2v3x0")
-expand_mode = 1
-
-[node name="CurrentMark" type="TextureRect" parent="."]
-unique_name_in_owner = true
-material = SubResource("ShaderMaterial_het3g")
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_2v3x0")
-expand_mode = 1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://cp6q0kwkmd886"]
+[gd_scene load_steps=37 format=3 uid="uid://cp6q0kwkmd886"]
 
 [ext_resource type="Script" uid="uid://bfnrjl1k57lvh" path="res://scenes/scratch.gd" id="1_mbcf5"]
 [ext_resource type="PackedScene" uid="uid://c20p5ssbao33o" path="res://scenes/inventory_grid.tscn" id="1_ufdn1"]
@@ -27,6 +27,7 @@
 [ext_resource type="Resource" uid="uid://nrlokvlwc4ij" path="res://entities/equipment/resources/large-transport.tres" id="21_ef4gy"]
 [ext_resource type="PackedScene" uid="uid://boqkkx2coehi3" path="res://scenes/route_planner.tscn" id="22_3vby6"]
 [ext_resource type="PackedScene" uid="uid://cns5gj0nnlevl" path="res://scenes/simple_text_input_modal.tscn" id="23_66q2l"]
+[ext_resource type="PackedScene" uid="uid://whcjm85ktyjn" path="res://scenes/caravan_scn.tscn" id="24_j4ha0"]
 [ext_resource type="TileSet" uid="uid://bolc3xf27oref" path="res://tilesets/example_map_terrain.tres" id="24_q062q"]
 [ext_resource type="Script" uid="uid://dey8uspll4epg" path="res://scenes/map.gd" id="25_0dnsp"]
 [ext_resource type="PackedScene" uid="uid://braxo1y2qe6x0" path="res://scenes/caravan_editor.tscn" id="28_66q2l"]
@@ -48,6 +49,7 @@ property_icons = NodePath("PropertyIcons")
 example_resources = Array[Resource]([ExtResource("2_eikx3"), ExtResource("3_epfvx"), ExtResource("4_ckrcg"), ExtResource("5_1ybip"), ExtResource("6_0arob"), ExtResource("7_jsre1"), ExtResource("8_40b10"), ExtResource("9_a4lx6"), ExtResource("10_jmbua"), ExtResource("11_vvahf"), ExtResource("12_q062q"), ExtResource("13_0dnsp"), ExtResource("14_pjqha"), ExtResource("15_j4ha0"), ExtResource("16_qwho5"), ExtResource("17_kah22"), ExtResource("18_2rqku"), ExtResource("19_dc0vr"), ExtResource("20_fq5e3"), ExtResource("21_ef4gy")])
 editor_scn = ExtResource("28_66q2l")
 simple_text_input_modal = ExtResource("23_66q2l")
+caravan_scn = ExtResource("24_j4ha0")
 player_speed = 200.0
 
 [node name="Map" type="TileMapLayer" parent="."]
@@ -57,9 +59,25 @@ script = ExtResource("25_0dnsp")
 source_id = 7
 tiles = Array[Vector2i]([Vector2i(9, 0), Vector2i(19, 7), Vector2i(9, 15), Vector2i(9, 23), Vector2i(19, 15), Vector2i(9, 19), Vector2i(29, 7), Vector2i(29, 11), Vector2i(29, 3), Vector2i(19, 11), Vector2i(9, 11), Vector2i(19, 3), Vector2i(29, 15)])
 
-[node name="RoutePlanner" parent="." node_paths=PackedStringArray("background_map") instance=ExtResource("22_3vby6")]
+[node name="RoutePlanner" parent="Map" node_paths=PackedStringArray("background_map") instance=ExtResource("22_3vby6")]
 unique_name_in_owner = true
-background_map = NodePath("../Map")
+background_map = NodePath("..")
+
+[node name="Player" type="Marker2D" parent="Map"]
+unique_name_in_owner = true
+position = Vector2(567, 325)
+
+[node name="TextureRect" type="TextureRect" parent="Map/Player"]
+custom_minimum_size = Vector2(30, 30)
+offset_left = -15.0
+offset_top = -15.0
+offset_right = 15.0
+offset_bottom = 15.0
+texture = ExtResource("35_pjqha")
+expand_mode = 1
+
+[node name="Caravans" type="Node2D" parent="Map"]
+unique_name_in_owner = true
 
 [node name="PropertyIcons" parent="." instance=ExtResource("9_cirwj")]
 unique_name_in_owner = true
@@ -82,19 +100,6 @@ offset_right = 415.0
 offset_bottom = -25.0
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("29_sv35f")
-
-[node name="Player" type="Marker2D" parent="."]
-unique_name_in_owner = true
-position = Vector2(619, 212)
-
-[node name="TextureRect" type="TextureRect" parent="Player"]
-custom_minimum_size = Vector2(32, 32)
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-texture = ExtResource("35_pjqha")
-expand_mode = 1
 
 [node name="inventory" parent="." instance=ExtResource("1_ufdn1")]
 unique_name_in_owner = true
