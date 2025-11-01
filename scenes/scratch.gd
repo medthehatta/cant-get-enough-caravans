@@ -18,6 +18,11 @@ var running: bool = false
 var expeditions: Array[Expedition] = []
 
 
+# TODO: Hacky player controller built in to this scene
+@export var player_speed: float = 10.0
+var player_velocity: Vector2 = Vector2.ZERO
+
+
 func debug_print(msg):
     if debug:
         print(msg)
@@ -30,10 +35,28 @@ func _ready():
     inventory_grid.resource_unhovered.connect(_on_item_unhovered)
     inventory_grid.visible = false
     cursor_inventory.visible = true
+    editors.visible = false
+
+
+func _physics_process(delta: float):
+    if Input.is_action_pressed("move_left"):
+        player_velocity.x = -1
+    elif Input.is_action_pressed("move_right"):
+        player_velocity.x = 1
+    else:
+        player_velocity.x = 0
+
+    if Input.is_action_pressed("move_up"):
+        player_velocity.y = -1
+    elif Input.is_action_pressed("move_down"):
+        player_velocity.y = 1
+    else:
+        player_velocity.y = 0
+
+    %Player.position += player_speed * player_velocity.normalized() * delta
 
 
 func _input(event):
-    debug_print(event)
     if event.is_action_released("clear_cursor"):
         cursor_inventory.clear_cursor()
     elif event.is_action_released("toggle_inventory"):
@@ -41,6 +64,8 @@ func _input(event):
 
 
 func toggle_inventory():
+    inventory_grid.position.y = editors.position.y + 20
+    inventory_grid.position.x = editors.position.x + editors.size.x + 20
     inventory_grid.visible = not inventory_grid.visible
 
 
@@ -136,19 +161,19 @@ func _on_new_caravan_button_pressed() -> void:
     editors.add_child(new_editor)
     editors.set_tab_title(next_tab, caravan_name)
 
-    var route_idx = route_planner.add_path(%NewRouteSpawnPoint.position - route_planner.position)
+    var route_idx = route_planner.add_path(%Player.position - route_planner.position)
 
     editor_to_route_idx[new_editor] = route_idx
 
     editors.current_tab = next_tab
     if editors.get_child_count() > 0:
-        %BigNewCaravanButton.visible = false
+        editors.visible = true
 
 
 func single_text_prompt_modal(prompt: String, default: String = ""):
     print("starting modal")
     var modal: SimpleTextInputModal = simple_text_input_modal.instantiate()
-    %SmallModalSpawnPos.add_child(modal)
+    add_child(modal)
     return await modal.prompt_and_wait(prompt, default)
 
 
@@ -158,10 +183,10 @@ func _on_remove_caravan_button_pressed() -> void:
 
     if current_editor:
         current_editor.queue_free()
-        editors.select_previous_available()
-        if editors.get_child_count() <= 0:
-            %BigNewCaravanButton.visible = true
+        editors.select_previous_available() or editors.select_next_available()
         editor_to_route_idx.erase(current_editor)
+        if editor_to_route_idx.size() == 0:
+            editors.visible = false
 
     if current_route_id_ != null:
         route_planner.remove_path(current_route_id_)

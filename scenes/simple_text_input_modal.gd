@@ -29,6 +29,10 @@ func prompt_and_wait(p: String, default: String = ""):
 
 
 func _ready():
+    # Position this in the center of the top section of the viewport
+    var viewport_size := get_viewport_rect().size
+    position.x = viewport_size.x / 2 - size.x / 2
+    position.y = viewport_size.y / 4 - size.y / 2
     visible = false
     print("...modal...")
 
