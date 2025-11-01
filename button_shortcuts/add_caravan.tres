@@ -1,0 +1,8 @@
+[gd_resource type="Shortcut" load_steps=2 format=3 uid="uid://c8yweokwpe80h"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_sv35f"]
+action = &"add_caravan"
+pressed = true
+
+[resource]
+events = [SubResource("InputEventAction_sv35f")]

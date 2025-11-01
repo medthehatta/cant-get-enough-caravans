@@ -28,12 +28,20 @@ func _ready():
     inventory_grid.populate_from_array(example_resources)
     inventory_grid.resource_hovered.connect(_on_item_hovered)
     inventory_grid.resource_unhovered.connect(_on_item_unhovered)
+    inventory_grid.visible = false
     cursor_inventory.visible = true
 
 
-func _on_gui_input(event):
+func _input(event):
+    debug_print(event)
     if event.is_action_released("clear_cursor"):
         cursor_inventory.clear_cursor()
+    elif event.is_action_released("toggle_inventory"):
+        toggle_inventory()
+
+
+func toggle_inventory():
+    inventory_grid.visible = not inventory_grid.visible
 
 
 func _on_item_hovered(_item: InventoryGridItem, resource: Resource):
@@ -128,7 +136,7 @@ func _on_new_caravan_button_pressed() -> void:
     editors.add_child(new_editor)
     editors.set_tab_title(next_tab, caravan_name)
 
-    var route_idx = route_planner.add_path(Vector2(60, 60))
+    var route_idx = route_planner.add_path(%NewRouteSpawnPoint.position - route_planner.position)
 
     editor_to_route_idx[new_editor] = route_idx
 
@@ -145,8 +153,6 @@ func single_text_prompt_modal(prompt: String, default: String = ""):
 
 
 func _on_remove_caravan_button_pressed() -> void:
-    # FIXME: When we remove editors, we reuse tab ids, but the routes are not
-    # cleared, so we get weird shared routes
     var current_editor = current_caravan_editor()
     var current_route_id_ = current_route_id()
 

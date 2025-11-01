@@ -1,0 +1,8 @@
+[gd_resource type="Shortcut" load_steps=2 format=3 uid="uid://du61l4f6s0e2k"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_sv35f"]
+action = &"edit_route"
+pressed = true
+
+[resource]
+events = [SubResource("InputEventAction_sv35f")]

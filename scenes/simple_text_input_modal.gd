@@ -16,6 +16,7 @@ func prompt_and_wait(p: String, default: String = ""):
     label.text = p
     input.text = default
     visible = true
+    input.select_all()
     input.grab_focus()
 
     await modal_done
