@@ -1,4 +1,6 @@
 extends TileMapLayer
+class_name Map
+
 
 @export var map_size = Vector2i(128, 64) # in tiles
 @export var source_id = 0 # your TileSet AtlasSource id
@@ -34,3 +36,23 @@ func _generate() -> void:
             var v := (noise.get_noise_2d(float(x), float(y)) + 1.0) * 0.5
             var idx := int(v * tiles.size())
             set_cell(Vector2i(x, y), source_id, tiles[idx])
+
+
+func snap_to_map(pt: Vector2):
+    return map_tile_to_control(control_to_map_tile(pt))
+
+
+func control_local_to_map(pt: Vector2) -> Vector2:
+    return pt - position
+
+
+func map_local_to_control(pt: Vector2) -> Vector2:
+    return pt + position
+
+
+func map_tile_to_control(pti: Vector2i) -> Vector2:
+    return map_to_local(pti) + position
+
+
+func control_to_map_tile(pt: Vector2) -> Vector2i:
+    return local_to_map(control_local_to_map(pt))

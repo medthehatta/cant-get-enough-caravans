@@ -16,9 +16,12 @@ var locked: Array[PathLine] = []
 var generated_ids: Array = []
 
 
-func debug_print(msg):
+func debug_print(msg, anno = null):
     if debug:
-        print(msg)
+        if anno:
+            print("%s=%s" % [anno, msg])
+        else:
+            print(msg)
 
 
 func get_unique_id():
@@ -66,16 +69,14 @@ func unlock_all():
         unlock(path_id)
 
 
-func add_path(starting_pos: Vector2):
+func add_path(starting_pos: Vector2, path_id = null):
     if pathline:
         pathline.visible = false
-    var path_id = get_unique_id()
+    path_id = path_id if path_id != null else get_unique_id()
     var new_path: PathLine = pathline_scene.instantiate()
     add_child(new_path)
     pathlines[path_id] = new_path
-    debug_print(starting_pos)
     new_path.position = snap_to_map(starting_pos)
-    debug_print(new_path.position)
     return path_id
 
 
@@ -103,6 +104,11 @@ func remove_path(path_id):
         pathlines.erase(path_id)
     else:
         print("Cannot delete pathline {0}, does not exist".format([path_id]))
+
+
+func reset_path(path_id, pos: Vector2):
+    remove_path(path_id)
+    add_path(pos, path_id)
 
 
 func _input(event):
@@ -211,35 +217,57 @@ func remove_point():
         print("No more points to remove from path")
 
 
+func sliding_window(size, arr):
+    var result = []
+    for i in range(arr.size()):
+        var batch = []
+        for j in range(size):
+            if i + j >= arr.size():
+                return result
+            batch.append(arr[i + j])
+        result.append(batch)
+    return result
+
+
 func get_path_coords(pl: PathLine) -> Array[Vector2i]:
     var waypoints: Array[Vector2i] = []
     for i in range(0, pl.get_point_count()):
         waypoints.append(control_to_map_tile(pl.get_point_position(i) + pl.position))
 
+    var adjacent = sliding_window(2, waypoints)
+
     # Waypoints are constrained to differ from each other along exactly one
     # dimension at a time
     var coords: Array[Vector2i] = []
 
-    for i in range(0, waypoints.size() - 1):
-        var diff = waypoints[i + 1] - waypoints[i]
+    for adj in adjacent:
+        var first = adj[0]
+        var second = adj[1]
+        var diff = second - first
         var direction: Vector2i = Vector2i.ZERO
+        var num_tiles: int = 0
         if diff.x == 0 and diff.y > 0:
             direction = Vector2i(0, 1)
+            num_tiles = diff.y
         elif diff.x == 0 and diff.y <= 0:
             direction = Vector2i(0, -1)
+            num_tiles = - diff.y
         elif diff.x > 0 and diff.y == 0:
             direction = Vector2i(1, 0)
+            num_tiles = diff.x
         elif diff.x <= 0 and diff.y == 0:
             direction = Vector2i(-1, 0)
+            num_tiles = - diff.x
         else:
             print("What direction is {}??".format(diff))
             assert(false)
-    
-        for j in range(0, int(diff.length())):
-            coords.append(waypoints[i] + j * direction)
-    
+
+        for j in range(0, num_tiles):
+            coords.append(first + j * direction)
+
     coords.append(waypoints[-1])
 
+    debug_print(coords, "get_path_coords")
     return coords
 
 
@@ -248,23 +276,28 @@ func get_tile_path(pl: PathLine):
     var tile_data: Array[MapTile] = []
 
     for pt in points:
-        var tile: MapTile
+        var tile := MapTile.new()
         var data = background_map.get_cell_tile_data(pt)
 
         if not (data and data.has_custom_data("map_tile")):
-            tile = MapTile.new()
             tile.biome = "none"
             tile.density = 1
         else:
-            tile = data.get_custom_data("map_tile")
+            var cust = data.get_custom_data("map_tile")
+            tile.biome = cust.biome
+            tile.density = cust.density
 
+        tile.map_position = pt
         tile_data.append(tile)
 
+    debug_print(tile_data, "get_tile_path")
     return tile_data
 
 
 func route(path_id):
     if pathlines.has(path_id):
-        return get_tile_path(pathlines[path_id])
+        var result = get_tile_path(pathlines[path_id])
+        debug_print(result, "planner route says path")
+        return result
     else:
         return null

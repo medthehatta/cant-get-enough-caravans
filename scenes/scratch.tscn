@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://cp6q0kwkmd886"]
+[gd_scene load_steps=38 format=3 uid="uid://cp6q0kwkmd886"]
 
 [ext_resource type="Script" uid="uid://bfnrjl1k57lvh" path="res://scenes/scratch.gd" id="1_mbcf5"]
 [ext_resource type="PackedScene" uid="uid://c20p5ssbao33o" path="res://scenes/inventory_grid.tscn" id="1_ufdn1"]
@@ -30,6 +30,7 @@
 [ext_resource type="PackedScene" uid="uid://whcjm85ktyjn" path="res://scenes/caravan_scn.tscn" id="24_j4ha0"]
 [ext_resource type="TileSet" uid="uid://bolc3xf27oref" path="res://tilesets/example_map_terrain.tres" id="24_q062q"]
 [ext_resource type="Script" uid="uid://dey8uspll4epg" path="res://scenes/map.gd" id="25_0dnsp"]
+[ext_resource type="PackedScene" uid="uid://btpigqkr6g6gi" path="res://scenes/expedition.tscn" id="25_qwho5"]
 [ext_resource type="PackedScene" uid="uid://braxo1y2qe6x0" path="res://scenes/caravan_editor.tscn" id="28_66q2l"]
 [ext_resource type="StyleBox" uid="uid://cuviy1uemkit0" path="res://themes/panel_bg.tres" id="29_sv35f"]
 [ext_resource type="Shortcut" uid="uid://c8yweokwpe80h" path="res://button_shortcuts/add_caravan.tres" id="29_vvahf"]
@@ -50,6 +51,7 @@ example_resources = Array[Resource]([ExtResource("2_eikx3"), ExtResource("3_epfv
 editor_scn = ExtResource("28_66q2l")
 simple_text_input_modal = ExtResource("23_66q2l")
 caravan_scn = ExtResource("24_j4ha0")
+expedition_scn = ExtResource("25_qwho5")
 player_speed = 200.0
 
 [node name="Map" type="TileMapLayer" parent="."]
@@ -171,6 +173,7 @@ layout_mode = 0
 property_icons = NodePath("../PropertyIcons")
 
 [node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
 autostart = true
 
 [connection signal="tab_selected" from="Editors" to="." method="_on_editors_tab_selected"]

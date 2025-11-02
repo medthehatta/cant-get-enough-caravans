@@ -38,7 +38,8 @@ func _collect(_event: Event):
 func collect(event: Event):
     var responses = []
 
-    responses.append_array(leader.collect(event))
+    if leader:
+        responses.append_array(leader.collect(event))
 
     for person in personnel:
         responses.append_array(person.collect(event))
@@ -59,13 +60,15 @@ func inflict_damage_to_caravan(damage):
 
 
 func inflict_stress_to_caravan(stress):
-    for child in [leader] + personnel:
+    var maybe_leader := [leader] if leader else []
+    for child in maybe_leader + personnel:
         var modified_stress = child.modify(stress)
         child.inflict_stress(modified_stress)
 
 
 func contribute_xp_to_caravan(xp):
-    for child in [leader] + personnel:
+    var maybe_leader := [leader] if leader else []
+    for child in maybe_leader + personnel:
         var modified_xp = child.modify(xp)
         child.contribute_xp(modified_xp)
 
@@ -120,7 +123,8 @@ func receive_loot(loot):
 func summary():
     var responses = []
 
-    responses.append(leader.dynamic_stats())
+    if leader:
+        responses.append(leader.dynamic_stats())
 
     for person in personnel:
         responses.append(person.dynamic_stats())

@@ -6,13 +6,15 @@ extends Control
 @onready var route_planner: RoutePlanner = %RoutePlanner
 @onready var last_timer_time = Time.get_ticks_msec()
 @onready var caravans = %Caravans
+@onready var map = %Map
 
 @export var property_icons: PropertyIcons
 @export var example_resources: Array[Resource]
 @export var editor_scn: PackedScene
 @export var simple_text_input_modal: PackedScene
-@export var debug: bool = false
+@export var debug: bool = true
 @export var caravan_scn: PackedScene
+@export var expedition_scn: PackedScene
 
 var editor_to_route_idx: Dictionary = {}
 var editor_to_caravan: Dictionary = {}
@@ -26,9 +28,12 @@ var expeditions: Array[Expedition] = []
 var player_velocity: Vector2 = Vector2.ZERO
 
 
-func debug_print(msg):
+func debug_print(msg, anno = null):
     if debug:
-        print(msg)
+        if anno:
+            print("%s=%s" % [anno, msg])
+        else:
+            print(msg)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -236,14 +241,19 @@ func _on_edit_route_button_pressed() -> void:
 
 func _on_toggle_run_toggled(toggled_on: bool) -> void:
     if toggled_on:
-        route_planner.lock_all()
-        for editor in editor_to_route_idx.keys():
-            var route_id = editor_to_route_idx[editor]
-            var route = route_planner.route(route_id)
-            var expedition = Expedition.new()
-            expedition.caravan = editor.caravan()
-            expedition.route = route
-            expeditions.append(expedition)
+        if not expeditions:
+            route_planner.lock_all()
+            for editor in editor_to_route_idx.keys():
+                var route_id = editor_to_route_idx[editor]
+                var route = route_planner.route(route_id)
+                var expedition = expedition_scn.instantiate()
+                expedition.route_id = route_id
+                expedition.map = map
+                expedition.caravan_scn = editor_to_caravan[editor]
+                expedition.caravan = editor.caravan()
+                expedition.route = route
+                expeditions.append(expedition)
+                debug_print(expeditions, "expeditions")
         running = true
         %ToggleRunButton.text = "Stop Run"
     else:
@@ -256,17 +266,16 @@ func _on_timer_timeout() -> void:
     var delta = float(current - last_timer_time)
     last_timer_time = current
 
-    var to_drop = []
+    var to_drop: Array[Expedition] = []
 
     if running:
         if expeditions.size() == 0:
             print("All expeditions done")
             running = false
+            %ToggleRunButton.button_pressed = false
             %ToggleRunButton.text = "Start Run"
 
         for expedition in expeditions:
-            print("\n\n")
-            print(expedition)
             var continuing = expedition.traverse(delta / 1000)
             if not continuing:
                 route_planner.unlock_path(expedition.route)
@@ -275,4 +284,6 @@ func _on_timer_timeout() -> void:
             print(expedition.caravan.summary())
 
         for drop in to_drop:
+            debug_print("exp={0} pid={1}".format([drop, drop.route_id]))
+            route_planner.reset_path(drop.route_id, drop.caravan_scn.position)
             expeditions.erase(drop)
