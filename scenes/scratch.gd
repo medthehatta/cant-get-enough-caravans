@@ -192,6 +192,7 @@ func _on_new_caravan_button_pressed() -> void:
     editor_to_caravan[new_editor] = new_caravan
 
     var route_idx = route_planner.add_path(new_caravan.position)
+    route_planner.pathlines[route_idx].inactive_color = new_caravan.color
 
     editor_to_route_idx[new_editor] = route_idx
 

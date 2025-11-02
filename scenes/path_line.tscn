@@ -3,13 +3,16 @@
 [ext_resource type="Script" uid="uid://bvnyoru01cu5c" path="res://scenes/path_line.gd" id="1_2v3x0"]
 
 [node name="PathLine" type="Line2D"]
+rotation = -0.00104349
 points = PackedVector2Array(0, 0)
-default_color = Color(1, 0.736, 0.28, 0.678431)
 round_precision = 1
 script = ExtResource("1_2v3x0")
+active_color = Color(0.15, 1, 0.220833, 0.827451)
+inactive_color = Color(1, 0.833333, 0, 0.670588)
+ahead_color = Color(0.278431, 0.4, 1, 0.678431)
+line_width = 5.0
 
 [node name="PathLineAhead" type="Line2D" parent="."]
 unique_name_in_owner = true
 points = PackedVector2Array(0, 0, 0, 0)
-default_color = Color(0.28, 0.4, 1, 0.678431)
 round_precision = 1

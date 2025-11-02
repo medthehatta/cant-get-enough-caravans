@@ -69,9 +69,17 @@ func unlock_all():
         unlock(path_id)
 
 
+func fade_out(pl: PathLine):
+    pl.fade_out()
+
+
+func fade_in(pl: PathLine):
+    pl.fade_in()
+
+
 func add_path(starting_pos: Vector2, path_id = null):
     if pathline:
-        pathline.visible = false
+        fade_out(pathline)
     path_id = path_id if path_id != null else get_unique_id()
     var new_path: PathLine = pathline_scene.instantiate()
     add_child(new_path)
@@ -83,14 +91,14 @@ func add_path(starting_pos: Vector2, path_id = null):
 func edit_path(path_id):
     if path_id == null:
         if pathline:
-            pathline.visible = false
+            fade_out(pathline)
         pathline = null
 
     elif pathlines.has(path_id):
         if pathline:
-            pathline.visible = false
+            fade_out(pathline)
         pathline = pathlines[path_id]
-        pathline.visible = true
+        fade_in(pathline)
 
     else:
         print("No pathline named {0}".format([path_id]))
