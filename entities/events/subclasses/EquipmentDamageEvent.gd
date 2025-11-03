@@ -18,3 +18,14 @@ static func create(dmg: Dictionary):
     event.electromagnetic = dmg.get("electromagnetic", 0)
     event.explosive = dmg.get("explosive", 0)
     return event
+
+
+static func copy(d):
+    return create(
+        {
+            "kinetic": d.kinetic,
+            "thermal": d.thermal,
+            "electromagnetic": d.electromagnetic,
+            "explosive": d.explosive,
+        }
+    )

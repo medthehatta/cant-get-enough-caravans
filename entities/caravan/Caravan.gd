@@ -30,10 +30,6 @@ func dynamic_stats():
     }
 
 
-func _collect(_event: Event):
-    return []
-
-
 # Override because we need to talk to our children
 func collect(event: Event):
     var responses = []
@@ -47,15 +43,15 @@ func collect(event: Event):
     for device in equipment:
         responses.append_array(device.collect(event))
 
-    # Do self last
-    responses.append_array(_collect(event))
+    responses.append_array(super.collect(event))
 
     return responses
 
 
 func inflict_damage_to_caravan(damage):
     for child in equipment:
-        var modified_damage = child.modify(damage)
+        var e_damage = EquipmentDamageEvent.copy(damage)
+        var modified_damage = child.modify(e_damage)
         child.inflict_damage(modified_damage)
 
 
@@ -116,7 +112,7 @@ func consume_caravan_resources(consumption):
     equipment_power += generated_power
 
 
-func receive_loot(loot):
+func receive_loot(_loot):
     pass
 
 

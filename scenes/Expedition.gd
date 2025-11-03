@@ -15,6 +15,7 @@ class_name Expedition
 var remaining_tile_progress = null
 
 var tile_index = 0
+var tile: MapTile
 
 var events = EventFactory.new()
 
@@ -67,10 +68,7 @@ func caravan_map_pos() -> Vector2i:
     return route[tile_index].map_position
 
 
-# Return bool for now: whether to continue or whether the expedition is over
-func traverse(delta: float) -> bool:
-    var tile: MapTile
-
+func _move(delta: float):
     if route.size() < 1:
         print("No route")
         return false
@@ -78,7 +76,6 @@ func traverse(delta: float) -> bool:
     if remaining_tile_progress != null and remaining_tile_progress <= 0:
         remaining_tile_progress = null
 
-        # FIXME: should this be route.size() - 1?
         if tile_index < route.size() - 1:
             tile_index += 1
         else:
@@ -99,34 +96,36 @@ func traverse(delta: float) -> bool:
         remaining_tile_progress = _progress_required_for(tile)
         print("remaining_tile_progress={0}".format([remaining_tile_progress]))
 
+    return true
+
+
+# Return bool for now: whether to continue or whether the expedition is over
+func traverse(delta: float) -> bool:
+    if not _move(delta):
+        return false
+
     # Make progress on the tile
-    var initial_progression = _base_progress_for(tile)
-    var modified_progression = caravan.modify(initial_progression)
+    var modified_progression = _base_progress_for(tile).modify_with([caravan])
     remaining_tile_progress -= modified_progression.speed * delta
 
     # Inflict integrity damage
-    var base_damage = _base_damage_for(tile)
-    var modified_damage = caravan.modify(base_damage)
+    var modified_damage = _base_damage_for(tile).modify_with([caravan])
     caravan.inflict_damage_to_caravan(modified_damage)
 
     # Inflict stress
-    var base_stress = _base_stress_for(tile)
-    var modified_stress = caravan.modify(base_stress)
+    var modified_stress = _base_stress_for(tile).modify_with([caravan])
     caravan.inflict_stress_to_caravan(modified_stress)
 
     # Contribute XP
-    var base_xp = _base_xp_for(tile)
-    var modified_xp = caravan.modify(base_xp)
+    var modified_xp = _base_xp_for(tile).modify_with([caravan])
     caravan.contribute_xp_to_caravan(modified_xp)
 
     # Consume resources
-    var base_consumption = _base_consumption_for(tile)
-    var modified_consumption = caravan.modify(base_consumption)
+    var modified_consumption = _base_consumption_for(tile).modify_with([caravan])
     caravan.consume_caravan_resources(modified_consumption)
 
     # Drop loot
-    var base_loot = _base_loot_for(tile)
-    var modified_loot = caravan.modify(base_loot)
+    var modified_loot = _base_loot_for(tile).modify_with([caravan])
     caravan.receive_loot(modified_loot)
 
     return true

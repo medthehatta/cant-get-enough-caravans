@@ -7,9 +7,9 @@ class_name ConstantMultiplyAttributeModifier
 
 
 func apply(inp):
-    var new = (inp as Dictionary).duplicate()
-    new[attribute] = new.get(attribute, 0) * value
-    return new
+    if inp.has(attribute):
+        inp.set(attribute, inp.get(attribute) * value)
+    return inp
 
 
 func tags():
@@ -17,4 +17,4 @@ func tags():
 
 
 func as_string():
-    return "multiply {} by {}".format(value, attribute)
+    return "multiply {} by {}".format([attribute, value], "{}")

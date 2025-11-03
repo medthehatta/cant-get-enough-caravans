@@ -18,3 +18,11 @@ func multiply_attribute(attr: String, value: float):
     mod.attribute = attr
     mod.value = value
     return (mod as Modifier)
+
+
+func clamp_attribute(attr: String, min_value: float, max_value: float):
+    var mod = ClampAttributeModifier.new()
+    mod.attribute = attr
+    mod.min_value = min_value
+    mod.max_value = max_value
+    return (mod as Modifier)

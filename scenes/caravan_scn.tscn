@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://whcjm85ktyjn"]
+[gd_scene load_steps=6 format=3 uid="uid://whcjm85ktyjn"]
 
 [ext_resource type="Script" uid="uid://cgxkg2ppbv0gt" path="res://scenes/caravan_scn.gd" id="1_6rkpw"]
 [ext_resource type="Shader" uid="uid://63vhs3i75nit" path="res://shaders/color_replace.gdshader" id="2_d0bn3"]
@@ -9,6 +9,9 @@ shader = ExtResource("2_d0bn3")
 shader_parameter/og_color = Color(0, 0, 0, 1)
 shader_parameter/new_color = Color(0, 0, 0, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d0bn3"]
+bg_color = Color(0, 0.54, 0.18, 1)
+
 [node name="CaravanScn" type="Node2D"]
 script = ExtResource("1_6rkpw")
 color_replace_shader = ExtResource("2_d0bn3")
@@ -16,9 +19,27 @@ color_replace_shader = ExtResource("2_d0bn3")
 [node name="CaravanIcon" type="TextureRect" parent="."]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_eskjf")
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = 30.0
+texture = ExtResource("3_ltd62")
+expand_mode = 1
+
+[node name="LeaderIcon" type="TextureRect" parent="."]
+unique_name_in_owner = true
 offset_left = -20.0
 offset_top = -20.0
 offset_right = 20.0
 offset_bottom = 20.0
-texture = ExtResource("3_ltd62")
 expand_mode = 1
+
+[node name="Integrity" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+offset_left = -20.0
+offset_top = 21.0
+offset_right = 20.0
+offset_bottom = 27.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_d0bn3")
+value = 100.0
+show_percentage = false

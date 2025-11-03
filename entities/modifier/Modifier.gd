@@ -19,4 +19,5 @@ func as_string():
 
 
 static func modified(initial: Variant, modifiers: Array):
+    # TODO: Ordering
     return ([initial] + modifiers).reduce(func(acc, m): return m.apply(acc))

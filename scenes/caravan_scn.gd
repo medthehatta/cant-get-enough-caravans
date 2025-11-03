@@ -16,3 +16,18 @@ func _ready():
     print(mat.shader)
     icon.material = mat
     mat.set_shader_parameter("new_color", color)
+    %Integrity.visible = false
+
+
+func _process(_delta: float):
+    if not resource:
+        return
+
+    %Integrity.visible = true
+    if resource.leader:
+        %LeaderIcon.texture = resource.leader.icon
+    var min_integrity = 100
+    for equip in resource.equipment:
+        if equip.integrity < min_integrity:
+            min_integrity = equip.integrity
+    %Integrity.value = min_integrity

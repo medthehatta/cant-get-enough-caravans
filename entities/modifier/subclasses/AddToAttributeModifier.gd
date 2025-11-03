@@ -6,10 +6,10 @@ class_name AddToAttributeModifier
 @export var value: float
 
 
-func apply(inp):
-    var new = (inp as Dictionary).duplicate()
-    new[attribute] = new.get(attribute, 0) + value
-    return new
+func apply(inp: Resource):
+    if inp.has(attribute):
+        inp.set(attribute, inp.get(attribute) + value)
+    return inp
 
 
 func tags():
@@ -17,4 +17,4 @@ func tags():
 
 
 func as_string():
-    return "add {} to {}".format(value, attribute)
+    return "add {} to {}".format([value, attribute], "{}")

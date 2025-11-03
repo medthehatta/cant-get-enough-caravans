@@ -222,7 +222,8 @@ func _on_remove_caravan_button_pressed() -> void:
     if current_editor:
         current_editor.queue_free()
         editor_to_route_idx.erase(current_editor)
-        editors.select_previous_available() or editors.select_next_available()
+        if not editors.select_previous_available():
+            editors.select_next_available()
         if editor_to_route_idx.size() == 0:
             editors.visible = false
 
@@ -252,6 +253,7 @@ func _on_toggle_run_toggled(toggled_on: bool) -> void:
                 expedition.map = map
                 expedition.caravan_scn = editor_to_caravan[editor]
                 expedition.caravan = editor.caravan()
+                expedition.caravan_scn.resource = expedition.caravan
                 expedition.route = route
                 expeditions.append(expedition)
                 debug_print(expeditions, "expeditions")
