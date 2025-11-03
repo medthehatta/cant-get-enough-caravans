@@ -49,23 +49,25 @@ func collect(event: Event):
 
 
 func inflict_damage_to_caravan(damage):
+    var e_damage = damage.copy_to(EquipmentDamageEvent)
     for child in equipment:
-        var e_damage = EquipmentDamageEvent.copy(damage)
-        var modified_damage = child.modify(e_damage)
+        var modified_damage = e_damage.modify_with([child])
         child.inflict_damage(modified_damage)
 
 
 func inflict_stress_to_caravan(stress):
+    var e_stress = stress.copy_to(PersonnelStressEvent)
     var maybe_leader := [leader] if leader else []
     for child in maybe_leader + personnel:
-        var modified_stress = child.modify(stress)
+        var modified_stress = e_stress.modify_with([child])
         child.inflict_stress(modified_stress)
 
 
 func contribute_xp_to_caravan(xp):
+    var e_xp = xp.copy_to(PersonnelXPGainEvent)
     var maybe_leader := [leader] if leader else []
     for child in maybe_leader + personnel:
-        var modified_xp = child.modify(xp)
+        var modified_xp = e_xp.modify_with([child])
         child.contribute_xp(modified_xp)
 
 

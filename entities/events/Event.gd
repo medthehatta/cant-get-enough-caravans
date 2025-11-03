@@ -19,3 +19,15 @@ func modify_with(actors: Array):
     for act in actors:
         mods.append_array(act.collect(self))
     return modify(mods)
+
+
+func copy_to(new_klass: Script):
+    var props = get_property_list()
+    var relevant = []
+    for prop in props:
+        if (prop["usage"] & (PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE)):
+            relevant.append(prop["name"])
+    var new = new_klass.new()
+    for prop in relevant:
+        new.set(prop, get(prop))
+    return new
